@@ -40,7 +40,6 @@
       padding-bottom: 56px;
     }
 
-    /* 顶部通栏横幅：零外边距，紧凑高密度 */
     .hero {
       width: 100%;
       background: linear-gradient(120deg, #0f172a 0%, #1e3a8a 55%, #1d4ed8 100%);
@@ -125,7 +124,6 @@
       font-weight: 600;
     }
 
-    /* 核心参数无缝参数带：100% 铺满无间隙 */
     .spec-strip {
       width: 100%;
       display: grid;
@@ -159,7 +157,6 @@
       margin-top: 2px;
     }
 
-    /* 双栏无缝优势区（教育 + 交通），无留白 */
     .dual-band {
       width: 100%;
       display: grid;
@@ -211,7 +208,6 @@
       font-weight: 900;
     }
 
-    /* 分空间全屏无缝矩阵 */
     .rooms-wrapper {
       width: 100%;
       background: var(--surface);
@@ -241,7 +237,6 @@
       font-weight: 600;
     }
 
-    /* 2列无缝网格排列 6 个空间，不留任何空白块 */
     .room-grid {
       width: 100%;
       display: grid;
@@ -297,7 +292,6 @@
       margin-bottom: 8px;
     }
 
-    /* 照片网格：有图时紧凑铺满，无图时自动折叠为0高度不占任何空白 */
     .room-photos {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
@@ -342,7 +336,6 @@
       padding: 1px 6px;
     }
 
-    /* 家具说明通栏提示条 */
     .furniture-strip {
       width: 100%;
       padding: 14px 24px;
@@ -356,7 +349,6 @@
       color: #92400e;
     }
 
-    /* 地图定位通栏区：左右无缝拼接（左侧信息+一键导航，右侧全幅地图） */
     .map-band {
       width: 100%;
       display: grid;
@@ -421,7 +413,6 @@
       display: block;
     }
 
-    /* 底部固定操作栏：100% 铺满无外边距 */
     .bottom-bar {
       position: fixed;
       bottom: 0;
@@ -471,7 +462,6 @@
       background: #1e293b;
     }
 
-    /* 弹窗 */
     .modal {
       display: none;
       position: fixed;
@@ -521,7 +511,6 @@
       font-size: 14px;
     }
 
-    /* 响应式自适应：平板与手机端自动切换列数，始终保持零留白铺满 */
     @media (max-width: 960px) {
       .spec-strip {
         grid-template-columns: repeat(3, 1fr);
@@ -574,7 +563,6 @@
 </head>
 <body>
 
-  <!-- 顶部通栏 -->
   <header class="hero">
     <div class="hero-inner">
       <div class="hero-left">
@@ -593,7 +581,6 @@
     </div>
   </header>
 
-  <!-- 核心参数无缝横条 -->
   <section class="spec-strip">
     <div class="spec-cell">
       <span class="spec-k">户型格局</span>
@@ -621,7 +608,6 @@
     </div>
   </section>
 
-  <!-- 双栏无缝核心亮点（教育 + 交通生活） -->
   <section class="dual-band">
     <div class="band-col">
       <h2 class="sec-head">🎓 紧邻一七一中学，目送式陪读首选</h2>
@@ -639,7 +625,6 @@
     </div>
   </section>
 
-  <!-- 六大空间无缝展示矩阵 -->
   <section class="rooms-wrapper">
     <div class="rooms-bar">
       <h2>🏡 分空间装修与配置详情</h2>
@@ -647,7 +632,6 @@
     </div>
 
     <div class="room-grid">
-      <!-- 1. 门厅与走廊 -->
       <div class="room-box">
         <div>
           <div class="room-top">
@@ -659,7 +643,6 @@
         <div class="room-photos empty" id="photos-hallway" data-label="门厅与走廊实拍"></div>
       </div>
 
-      <!-- 2. 客厅 -->
       <div class="room-box">
         <div>
           <div class="room-top">
@@ -671,7 +654,6 @@
         <div class="room-photos empty" id="photos-living" data-label="客厅实拍"></div>
       </div>
 
-      <!-- 3. 主卧 -->
       <div class="room-box">
         <div>
           <div class="room-top">
@@ -683,7 +665,6 @@
         <div class="room-photos empty" id="photos-master" data-label="主卧实拍"></div>
       </div>
 
-      <!-- 4. 次卧 -->
       <div class="room-box">
         <div>
           <div class="room-top">
@@ -695,7 +676,6 @@
         <div class="room-photos empty" id="photos-second" data-label="次卧实拍"></div>
       </div>
 
-      <!-- 5. 厨房 -->
       <div class="room-box">
         <div>
           <div class="room-top">
@@ -707,7 +687,6 @@
         <div class="room-photos empty" id="photos-kitchen" data-label="厨房实拍"></div>
       </div>
 
-      <!-- 6. 卫生间 -->
       <div class="room-box">
         <div>
           <div class="room-top">
@@ -720,13 +699,11 @@
       </div>
     </div>
 
-    <!-- 家具说明通栏提示条 -->
     <div class="furniture-strip">
       <strong>关于家具的真诚说明：</strong>上一任租客自带全套家具，将原配全新床、衣柜、餐桌椅处理掉了，实在可惜，因此本次不再统一配备活动家具——<strong>非常适合自带全套家具、或希望给孩子配置习惯睡的实木床与护脊书桌的陪读家庭</strong>。（若您希望配齐全新家具，月租不低于 <strong>8000 元</strong> 且租期满 <strong>三年</strong> 即可商量配置。）
     </div>
   </section>
 
-  <!-- 地图定位与一键导航无缝通栏 -->
   <section class="map-band">
     <div class="map-sidebar">
       <div>
@@ -750,20 +727,17 @@
     </iframe>
   </section>
 
-  <!-- 底部通栏操作栏 -->
   <div class="bottom-bar">
     <button class="btn btn-primary" id="wechat-btn" onclick="revealAndCopy()">🔒 点击查看微信：186****7704</button>
     <button class="btn btn-outline" id="call-btn" onclick="callLandlord()">📞 拨打电话</button>
     <button class="btn btn-outline" onclick="showQR()">📱 分享二维码</button>
   </div>
 
-  <!-- 大图预览 -->
   <div class="modal lightbox" id="lightbox" onclick="this.style.display='none'">
     <img id="lb-img" src="" alt="房屋实拍">
     <div class="lightbox-caption" id="lb-caption"></div>
   </div>
 
-  <!-- 二维码分享弹窗 -->
   <div class="modal" id="qr-modal" onclick="this.style.display='none'">
     <div class="modal-box" onclick="event.stopPropagation()">
       <h3 style="font-size:16px;">扫码保存或转发给家人</h3>
@@ -790,8 +764,7 @@
 
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(fullNum).then(() => {
-          alert('微信号 ' + fullNum + ' 已解锁并复制！
-添加微信时备注“和平街租房”通过更快（中介勿扰）。');
+          alert('微信号 ' + fullNum + ' 已解锁并复制！\n添加微信时备注“和平街租房”通过更快（中介勿扰）。');
         }).catch(() => {
           prompt('已为您解锁微信号，请长按复制：', fullNum);
         });
