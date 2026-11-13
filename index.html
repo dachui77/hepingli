@@ -331,7 +331,7 @@
     <section class="card">
       <h2>🚇 三地铁覆盖 + 夜班公交，通勤生活双满分</h2>
       <ul>
-        <li><strong>地铁出行：</strong>步行可达 <strong>13号线柳芳站</strong>（往东一站即东直门），<strong>5号线和平里北街站、雍和宫站</strong>及 <strong>2号线雍和宫站</strong>均在覆盖范围内，去往望京、国贸、中关村极其顺畅。</li>
+        <li><strong>地铁出行：</strong>步行可达 <strong>13号线柳芳站</strong>（往东一站即东直门），<strong>5号线和平里北街站、雍和宫站</strong>及 <strong>2号线雍和宫站</strong>均在覆盖范围内，往来望京、国贸、中关村极其顺畅。</li>
         <li><strong>密集公交：</strong>和平里路口北有 13、62、117、123、406、674、684 路；夜里还有 <strong>201 路夜班车</strong>，加班晚归也不用打车。</li>
         <li><strong>成熟生活圈：</strong>老牌安静社区，楼上楼下多为多年老邻居。菜市场、超市、药店、小饭馆全在步行范围，早买豆浆油条、晚带青菜上楼，日子过得从容顺心。</li>
       </ul>
@@ -403,41 +403,111 @@
       document.getElementById('qr-modal').style.display = 'flex';
     }
 
-    // 五大分区各自独立探测对应实拍图
+    // 按需加载 heic2any 解码库（仅在检测到 .heic 图片时加载，避免影响纯 jpg/png 页面的打开速度）
+    let heic2anyPromise = null;
+    function getHeic2Any() {
+      if (window.heic2any) return Promise.resolve(window.heic2any);
+      if (!heic2anyPromise) {
+        heic2anyPromise = new Promise((resolve, reject) => {
+          const s = document.createElement('script');
+          s.src = 'https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js';
+          s.onload = () => resolve(window.heic2any);
+          s.onerror = () => reject(new Error('heic2any 加载失败'));
+          document.head.appendChild(s);
+        });
+      }
+      return heic2anyPromise;
+    }
+
+    // 五大分区各自独立探测对应实拍图（每间支持 5 张，兼容 jpg / jpeg / png / heic）
     (function loadRoomPhotos() {
       const roomMappings = [
-        { containerId: 'photos-living', files: ['living.jpg', 'living-1.jpg', 'living-2.jpg'] },
-        { containerId: 'photos-master', files: ['master.jpg', 'master-1.jpg', 'master-2.jpg'] },
-        { containerId: 'photos-second', files: ['second.jpg', 'second-1.jpg', 'second-2.jpg'] },
-        { containerId: 'photos-kitchen', files: ['kitchen.jpg', 'kitchen-1.jpg', 'kitchen-2.jpg'] },
-        { containerId: 'photos-bath', files: ['bath.jpg', 'bath-1.jpg', 'bath-2.jpg'] }
+        { containerId: 'photos-living',  prefix: 'living' },
+        { containerId: 'photos-master',  prefix: 'master' },
+        { containerId: 'photos-second',  prefix: 'second' },
+        { containerId: 'photos-kitchen', prefix: 'kitchen' },
+        { containerId: 'photos-bath',    prefix: 'bath' }
       ];
+      const suffixes = ['', '-1', '-2', '-3', '-4', '-5'];
+      const extensions = ['jpg', 'jpeg', 'png', 'heic'];
 
       roomMappings.forEach(room => {
         const container = document.getElementById(room.containerId);
         const label = container.getAttribute('data-label');
+        let loadedCount = 0;
 
-        room.files.forEach(file => {
+        function appendPhoto(imgEl, displaySrc) {
+          if (loadedCount >= 5) return;
+          loadedCount += 1;
+          container.classList.remove('empty');
+
+          const item = document.createElement('div');
+          item.className = 'photo-item';
+          item.onclick = () => {
+            document.getElementById('lb-img').src = displaySrc;
+            document.getElementById('lb-caption').textContent = label;
+            document.getElementById('lightbox').style.display = 'flex';
+          };
+          const tip = document.createElement('span');
+          tip.className = 'photo-zoom-tip';
+          tip.textContent = '点击放大';
+          item.appendChild(imgEl);
+          item.appendChild(tip);
+          container.appendChild(item);
+        }
+
+        function probeSlot(slotIdx, extIdx) {
+          if (slotIdx >= suffixes.length || loadedCount >= 5) return;
+          if (extIdx >= extensions.length) {
+            probeSlot(slotIdx + 1, 0);
+            return;
+          }
+
+          const ext = extensions[extIdx];
+          const file = room.prefix + suffixes[slotIdx] + '.' + ext;
+
+          if (ext === 'heic') {
+            fetch(file)
+              .then(res => {
+                if (!res.ok) throw new Error('not found');
+                return res.blob();
+              })
+              .then(blob => getHeic2Any().then(converter => converter({
+                blob: blob,
+                toType: 'image/jpeg',
+                quality: 0.85
+              })))
+              .then(converted => {
+                const outBlob = Array.isArray(converted) ? converted[0] : converted;
+                const objectUrl = URL.createObjectURL(outBlob);
+                const img = new Image();
+                img.alt = label;
+                img.onload = () => {
+                  appendPhoto(img, objectUrl);
+                  probeSlot(slotIdx + 1, 0);
+                };
+                img.onerror = () => probeSlot(slotIdx, extIdx + 1);
+                img.src = objectUrl;
+              })
+              .catch(() => {
+                probeSlot(slotIdx, extIdx + 1);
+              });
+            return;
+          }
+
           const img = new Image();
-          img.src = file;
           img.alt = label;
           img.onload = () => {
-            container.classList.remove('empty');
-            const item = document.createElement('div');
-            item.className = 'photo-item';
-            item.onclick = () => {
-              document.getElementById('lb-img').src = file;
-              document.getElementById('lb-caption').textContent = label;
-              document.getElementById('lightbox').style.display = 'flex';
-            };
-            const tip = document.createElement('span');
-            tip.className = 'photo-zoom-tip';
-            tip.textContent = '点击放大';
-            item.appendChild(img);
-            item.appendChild(tip);
-            container.appendChild(item);
+            appendPhoto(img, file);
+            probeSlot(slotIdx + 1, 0);
           };
-        });
+          img.onerror = () => {
+            probeSlot(slotIdx, extIdx + 1);
+          };
+          img.src = file;
+        }
+
+        probeSlot(0, 0);
       });
     })();
   </script>
