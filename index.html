@@ -6,420 +6,755 @@
   <title>直租｜朝阳和平街14区3号楼一单元 · 紧邻一七一中学精装电梯两居</title>
   <style>
     :root {
-      --primary: #1e40af;
-      --primary-light: #eff6ff;
-      --accent: #d97706;
-      --text: #1f2937;
+      --primary: #1e3a8a;
+      --primary-mid: #1d4ed8;
+      --primary-tint: #eff6ff;
+      --accent: #b45309;
+      --accent-bg: #fffbeb;
+      --text: #111827;
+      --text-sub: #374151;
       --muted: #6b7280;
-      --bg: #f3f4f6;
-      --card: #ffffff;
-      --border: #e5e7eb;
+      --surface: #ffffff;
+      --surface-alt: #f8fafc;
+      --border: #dbeafe;
+      --divider: #e2e8f0;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.65;
-      padding-bottom: 88px;
-    }
-    .hero {
-      background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
-      color: #fff;
-      padding: 36px clamp(16px, 3vw, 40px) 36px;
-      text-align: center;
-    }
-    .badge {
-      display: inline-block;
-      background: rgba(255,255,255,0.18);
-      padding: 4px 12px;
-      border-radius: 999px;
-      font-size: 13px;
-      font-weight: 600;
-      margin-bottom: 12px;
-    }
-    .hero h1 { font-size: 24px; line-height: 1.35; margin-bottom: 10px; }
-    .hero p { font-size: 15px; opacity: 0.92; max-width: 100%; margin: 0 auto; }
-    .container { width: 100%; max-width: 100%; margin: 0; padding: 0; }
-    .card {
-      background: var(--card);
-      border-radius: 0;
-      padding: 24px clamp(16px, 3vw, 40px);
-      margin-bottom: 10px;
-      box-shadow: none;
-      border-bottom: 1px solid var(--border);
-    }
-    .price-row {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 16px;
-      margin-bottom: 16px;
-    }
-    .price { font-size: 28px; font-weight: 800; color: #dc2626; }
-    .price span { font-size: 14px; font-weight: 400; color: var(--muted); }
-    .tags { display: flex; flex-wrap: wrap; gap: 8px; }
-    .tag {
-      background: var(--primary-light);
-      color: var(--primary);
-      font-size: 13px;
-      font-weight: 600;
-      padding: 4px 10px;
-      border-radius: 6px;
-    }
-    .tag.highlight { background: #fef3c7; color: #b45309; }
-    .grid-info {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 12px;
-    }
-    .info-box {
-      background: #f9fafb;
-      padding: 12px;
-      border-radius: 10px;
-    }
-    .info-label { font-size: 12px; color: var(--muted); }
-    .info-val { font-size: 15px; font-weight: 700; margin-top: 2px; }
-    h2 {
-      font-size: 18px;
-      margin-bottom: 14px;
-      color: #111827;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    ul { padding-left: 18px; }
-    li { margin-bottom: 10px; font-size: 15px; }
 
-    /* 分空间卡片样式 */
-    .room-list {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
-    .room-card {
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 16px;
-      background: #fafafa;
+
+    html, body {
+      width: 100%;
+      min-height: 100%;
+      background: var(--surface);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+      line-height: 1.55;
+      overflow-x: hidden;
     }
-    .room-header {
+
+    body {
+      padding-bottom: 56px;
+    }
+
+    /* 顶部通栏横幅：零外边距，紧凑高密度 */
+    .hero {
+      width: 100%;
+      background: linear-gradient(120deg, #0f172a 0%, #1e3a8a 55%, #1d4ed8 100%);
+      color: #ffffff;
+      padding: 20px 24px;
+      border-bottom: 2px solid #1e40af;
+    }
+
+    .hero-inner {
+      width: 100%;
       display: flex;
-      justify-content: space-between;
-      align-items: center;
       flex-wrap: wrap;
-      gap: 8px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .hero-left {
+      flex: 1 1 520px;
+    }
+
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
       margin-bottom: 8px;
     }
-    .room-title {
-      font-size: 16px;
-      font-weight: 700;
-      color: #1e3a8a;
-    }
-    .room-pill {
+
+    .badge {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.16);
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      padding: 2px 10px;
       font-size: 12px;
-      background: #e0e7ff;
-      color: #1e40af;
-      padding: 2px 8px;
-      border-radius: 999px;
-      font-weight: 600;
-    }
-    .room-desc {
-      font-size: 14.5px;
-      color: #374151;
-      margin-bottom: 10px;
-    }
-    .room-photos {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 12px;
-      margin-top: 10px;
-    }
-    .room-photos.empty {
-      display: none;
-    }
-    .photo-item {
-      border-radius: 8px;
-      overflow: hidden;
-      border: 1px solid var(--border);
-      cursor: pointer;
-      position: relative;
-      background: #fff;
-    }
-    .photo-item img {
-      width: 100%;
-      height: 220px;
-      object-fit: cover;
-      display: block;
-      transition: transform 0.25s ease;
-    }
-    .photo-item:hover img {
-      transform: scale(1.03);
-    }
-    .photo-zoom-tip {
-      position: absolute;
-      right: 8px;
-      bottom: 8px;
-      background: rgba(0,0,0,0.55);
-      color: #fff;
-      font-size: 11px;
-      padding: 2px 7px;
-      border-radius: 4px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
     }
 
-    /* 地图定位样式 */
-    .map-wrapper {
-      margin-top: 16px;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      overflow: hidden;
-      background: #f9fafb;
+    .badge.gold {
+      background: #f59e0b;
+      color: #111827;
+      border-color: #fbbf24;
     }
-    .map-frame {
+
+    .hero h1 {
+      font-size: clamp(20px, 2.4vw, 28px);
+      font-weight: 800;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .hero p {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .hero-price-panel {
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      padding: 12px 18px;
+      text-align: right;
+      flex: 0 0 auto;
+    }
+
+    .hero-price {
+      font-size: 28px;
+      font-weight: 900;
+      color: #fde047;
+      line-height: 1.1;
+    }
+
+    .hero-price small {
+      font-size: 13px;
+      font-weight: 500;
+      color: #ffffff;
+    }
+
+    .hero-pay-note {
+      font-size: 12px;
+      color: #e0f2fe;
+      margin-top: 4px;
+      font-weight: 600;
+    }
+
+    /* 核心参数无缝参数带：100% 铺满无间隙 */
+    .spec-strip {
       width: 100%;
-      height: 360px;
-      border: 0;
-      display: block;
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      background: var(--surface-alt);
+      border-bottom: 1px solid var(--divider);
     }
-    .map-actions {
+
+    .spec-cell {
+      padding: 12px 16px;
+      border-right: 1px solid var(--divider);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .spec-cell:last-child {
+      border-right: none;
+    }
+
+    .spec-k {
+      font-size: 11.5px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .spec-v {
+      font-size: 14.5px;
+      font-weight: 800;
+      color: var(--text);
+      margin-top: 2px;
+    }
+
+    /* 双栏无缝优势区（教育 + 交通），无留白 */
+    .dual-band {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-bottom: 1px solid var(--divider);
+    }
+
+    .band-col {
+      padding: 18px 24px;
+      background: var(--surface);
+    }
+
+    .band-col:first-child {
+      border-right: 1px solid var(--divider);
+      background: #fafcff;
+    }
+
+    .sec-head {
+      font-size: 16.5px;
+      font-weight: 800;
+      color: var(--primary);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      border-left: 4px solid var(--primary-mid);
+      padding-left: 8px;
+    }
+
+    .tight-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .tight-list li {
+      font-size: 14px;
+      color: var(--text-sub);
+      padding-left: 14px;
+      position: relative;
+    }
+
+    .tight-list li::before {
+      content: "▪";
+      position: absolute;
+      left: 0;
+      color: var(--primary-mid);
+      font-weight: 900;
+    }
+
+    /* 分空间全屏无缝矩阵 */
+    .rooms-wrapper {
+      width: 100%;
+      background: var(--surface);
+    }
+
+    .rooms-bar {
+      width: 100%;
+      padding: 14px 24px;
+      background: var(--primary-tint);
+      border-bottom: 1px solid var(--border);
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
-      padding: 12px;
-      background: #f8fafc;
-      border-top: 1px solid var(--border);
+      justify-content: space-between;
       align-items: center;
+      gap: 8px;
+    }
+
+    .rooms-bar h2 {
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .rooms-bar span {
+      font-size: 13px;
+      color: var(--text-sub);
+      font-weight: 600;
+    }
+
+    /* 2列无缝网格排列 6 个空间，不留任何空白块 */
+    .room-grid {
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .room-box {
+      padding: 18px 24px;
+      border-right: 1px solid var(--divider);
+      border-bottom: 1px solid var(--divider);
+      background: var(--surface);
+      display: flex;
+      flex-direction: column;
       justify-content: space-between;
     }
-    .map-addr {
-      font-size: 13px;
-      color: #374151;
-      font-weight: 600;
-    }
-    .map-btn-group {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-    }
-    .map-link {
-      font-size: 12.5px;
-      font-weight: 600;
-      padding: 6px 10px;
-      border-radius: 6px;
-      text-decoration: none;
-      background: #ffffff;
-      color: var(--primary);
-      border: 1px solid #bfdbfe;
-      transition: background 0.2s;
-    }
-    .map-link:hover {
-      background: var(--primary-light);
+
+    .room-box:nth-child(2n) {
+      border-right: none;
     }
 
-    .note-box {
-      background: #fffbeb;
-      border-left: 4px solid var(--accent);
-      padding: 14px 16px;
-      border-radius: 8px;
-      font-size: 14px;
-      margin-top: 16px;
+    .room-box:nth-child(4n+2),
+    .room-box:nth-child(4n+3) {
+      background: var(--surface-alt);
     }
-    .bottom-bar {
-      position: fixed;
-      bottom: 0; left: 0; right: 0;
-      background: #ffffff;
-      border-top: 1px solid var(--border);
-      padding: 10px 12px;
+
+    .room-top {
       display: flex;
-      justify-content: center;
+      justify-content: space-between;
       align-items: center;
       gap: 8px;
-      box-shadow: 0 -2px 10px rgba(0,0,0,0.06);
-      z-index: 50;
+      margin-bottom: 6px;
     }
-    .btn {
-      border: none;
-      border-radius: 10px;
-      padding: 11px 14px;
-      font-size: 14px;
+
+    .room-name {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .room-tag {
+      font-size: 11.5px;
       font-weight: 700;
+      background: var(--primary-tint);
+      color: var(--primary-mid);
+      border: 1px solid var(--border);
+      padding: 2px 8px;
+      white-space: nowrap;
+    }
+
+    .room-text {
+      font-size: 13.8px;
+      color: var(--text-sub);
+      margin-bottom: 8px;
+    }
+
+    /* 照片网格：有图时紧凑铺满，无图时自动折叠为0高度不占任何空白 */
+    .room-photos {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    .room-photos.empty {
+      display: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .photo-item {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--divider);
       cursor: pointer;
-      text-decoration: none;
-      display: inline-flex;
+      background: #e5e7eb;
+      aspect-ratio: 4 / 3;
+    }
+
+    .photo-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.2s ease;
+    }
+
+    .photo-item:hover img {
+      transform: scale(1.04);
+    }
+
+    .photo-zoom-tip {
+      position: absolute;
+      right: 4px;
+      bottom: 4px;
+      background: rgba(15, 23, 42, 0.72);
+      color: #fff;
+      font-size: 10.5px;
+      padding: 1px 6px;
+    }
+
+    /* 家具说明通栏提示条 */
+    .furniture-strip {
+      width: 100%;
+      padding: 14px 24px;
+      background: var(--accent-bg);
+      border-bottom: 1px solid #fde68a;
+      font-size: 13.8px;
+      color: #78350f;
+    }
+
+    .furniture-strip strong {
+      color: #92400e;
+    }
+
+    /* 地图定位通栏区：左右无缝拼接（左侧信息+一键导航，右侧全幅地图） */
+    .map-band {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      background: var(--surface-alt);
+      border-bottom: 1px solid var(--divider);
+    }
+
+    .map-sidebar {
+      padding: 18px 24px;
+      border-right: 1px solid var(--divider);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 12px;
+      background: var(--surface);
+    }
+
+    .map-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--primary);
+      border-left: 4px solid var(--primary-mid);
+      padding-left: 8px;
+    }
+
+    .map-desc {
+      font-size: 13.5px;
+      color: var(--text-sub);
+    }
+
+    .map-nav-btns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .map-link {
+      display: flex;
       align-items: center;
       justify-content: center;
       gap: 4px;
-      white-space: nowrap;
-      transition: background 0.2s;
+      padding: 9px 10px;
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: none;
+      color: var(--primary);
+      background: var(--primary-tint);
+      border: 1px solid var(--border);
+      transition: background 0.15s;
     }
-    .btn-primary { background: var(--primary); color: #fff; }
-    .btn-unlocked { background: #059669; color: #fff; }
-    .btn-outline { background: #f3f4f6; color: var(--text); }
+
+    .map-link:hover {
+      background: #dbeafe;
+    }
+
+    .map-frame {
+      width: 100%;
+      height: 100%;
+      min-height: 280px;
+      border: 0;
+      display: block;
+    }
+
+    /* 底部固定操作栏：100% 铺满无外边距 */
+    .bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 56px;
+      background: #0f172a;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      z-index: 50;
+      border-top: 1px solid #1e293b;
+    }
+
+    .btn {
+      border: none;
+      border-right: 1px solid rgba(255, 255, 255, 0.14);
+      height: 100%;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      color: #ffffff;
+      background: transparent;
+      transition: background 0.15s;
+    }
+
+    .btn:last-child {
+      border-right: none;
+    }
+
+    .btn-primary {
+      background: #1d4ed8;
+    }
+
+    .btn-primary:hover {
+      background: #1e40af;
+    }
+
+    .btn-unlocked {
+      background: #059669;
+    }
+
+    .btn-outline:hover {
+      background: #1e293b;
+    }
+
+    /* 弹窗 */
     .modal {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.85);
+      background: rgba(0, 0, 0, 0.88);
       z-index: 100;
       justify-content: center;
       align-items: center;
       flex-direction: column;
-      padding: 20px;
+      padding: 16px;
     }
+
     .modal-box {
       background: #fff;
-      padding: 24px;
-      border-radius: 16px;
+      padding: 20px;
       text-align: center;
       max-width: 320px;
       width: 100%;
+      border: 1px solid var(--divider);
     }
-    .modal-box img { width: 220px; height: 220px; margin: 12px auto; display: block; }
-    .lightbox img { max-width: 95%; max-height: 82vh; border-radius: 8px; }
-    .lightbox-caption { color: #fff; margin-top: 10px; font-size: 14px; }
+
+    .modal-box img {
+      width: 220px;
+      height: 220px;
+      margin: 10px auto;
+      display: block;
+    }
+
+    .modal-close {
+      width: 100%;
+      padding: 10px;
+      background: var(--primary-mid);
+      color: #fff;
+      border: none;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .lightbox img {
+      max-width: 96%;
+      max-height: 84vh;
+    }
+
+    .lightbox-caption {
+      color: #fff;
+      margin-top: 8px;
+      font-size: 14px;
+    }
+
+    /* 响应式自适应：平板与手机端自动切换列数，始终保持零留白铺满 */
+    @media (max-width: 960px) {
+      .spec-strip {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .spec-cell:nth-child(3) {
+        border-right: none;
+      }
+      .spec-cell:nth-child(-n+3) {
+        border-bottom: 1px solid var(--divider);
+      }
+      .map-band {
+        grid-template-columns: 1fr;
+      }
+      .map-sidebar {
+        border-right: none;
+        border-bottom: 1px solid var(--divider);
+      }
+    }
+
+    @media (max-width: 720px) {
+      .dual-band,
+      .room-grid {
+        grid-template-columns: 1fr;
+      }
+      .band-col:first-child {
+        border-right: none;
+        border-bottom: 1px solid var(--divider);
+      }
+      .room-box {
+        border-right: none;
+      }
+      .hero-price-panel {
+        width: 100%;
+        text-align: left;
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+      }
+      .spec-strip {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .spec-cell:nth-child(2n) {
+        border-right: none;
+      }
+      .spec-cell:nth-child(-n+4) {
+        border-bottom: 1px solid var(--divider);
+      }
+    }
   </style>
 </head>
 <body>
 
+  <!-- 顶部通栏 -->
   <header class="hero">
-    <div class="badge">直租 · 无任何中介费</div>
-    <h1>朝阳和平街14区 3号楼一单元 整租</h1>
-    <p>紧邻北京市第一七一中学 · 7/20层黄金楼层带电梯 · 精装保养极佳 · 诚寻整租有缘人</p>
+    <div class="hero-inner">
+      <div class="hero-left">
+        <div class="badge-row">
+          <span class="badge gold">直租 · 无任何中介费</span>
+          <span class="badge">紧邻北京市第一七一中学</span>
+          <span class="badge">精装电梯两居 · 仅限整租</span>
+        </div>
+        <h1>朝阳和平街14区 3号楼一单元 整租</h1>
+        <p>7/20层黄金中低区带电梯 · 三年前环保精装保养极佳 · 步行几分钟直达校门 · 诚寻整租有缘人</p>
+      </div>
+      <div class="hero-price-panel">
+        <div class="hero-price">7600 - 8000 <small>元/月</small></div>
+        <div class="hero-pay-note">签满两年可「押一付一」｜常规押一付三</div>
+      </div>
+    </div>
   </header>
 
-  <main class="container">
-    <section class="card">
-      <div class="price-row">
-        <div class="price">7600 - 8000 <span>元/月（整租）</span></div>
-        <div class="tags">
-          <span class="tag highlight">签满两年可「押一付一」</span>
-          <span class="tag">常规押一付三</span>
-          <span class="tag">仅限整租</span>
-        </div>
-      </div>
-      <div class="grid-info">
-        <div class="info-box"><div class="info-label">户型格局</div><div class="info-val">两室一厅一卫一厨</div></div>
-        <div class="info-box"><div class="info-label">建筑面积</div><div class="info-val">约 66 平米</div></div>
-        <div class="info-box"><div class="info-label">楼层电梯</div><div class="info-val">7 层 / 共 20 层（有电梯）</div></div>
-        <div class="info-box"><div class="info-label">看房时间</div><div class="info-val">工作日19点后 / 周末全天</div></div>
-      </div>
-    </section>
+  <!-- 核心参数无缝横条 -->
+  <section class="spec-strip">
+    <div class="spec-cell">
+      <span class="spec-k">户型格局</span>
+      <span class="spec-v">两室一厅一卫一厨</span>
+    </div>
+    <div class="spec-cell">
+      <span class="spec-k">建筑面积</span>
+      <span class="spec-v">约 66 平米</span>
+    </div>
+    <div class="spec-cell">
+      <span class="spec-k">楼层电梯</span>
+      <span class="spec-v">7 层 / 共 20 层（电梯）</span>
+    </div>
+    <div class="spec-cell">
+      <span class="spec-k">出租方式</span>
+      <span class="spec-v">整租（无中介费）</span>
+    </div>
+    <div class="spec-cell">
+      <span class="spec-k">付款方式</span>
+      <span class="spec-v">押一付三 / 两年押一付一</span>
+    </div>
+    <div class="spec-cell">
+      <span class="spec-k">看房时间</span>
+      <span class="spec-v">工作日19点后 / 周末全天</span>
+    </div>
+  </section>
 
-    <section class="card">
-      <h2>🎓 核心王牌：紧邻一七一中学，目送式陪读首选</h2>
-      <ul>
-        <li><strong>零距离省时安心：</strong>房子紧邻<strong>北京市第一七一中学</strong>，下楼步行几分钟即达校门。孩子早上多睡半小时，晚自习放学几分钟安全到家，彻底省去家长接送奔波。</li>
-        <li><strong>全龄教育与高校环绕：</strong>周边另有汇佳幼儿园、西坝河第三幼儿园、国家林业局幼儿园，汇成中学、化工学院附中，以及对外经贸、北中医、北服等高校，人文学习氛围浓厚（入学政策以当年官方规定为准）。</li>
+  <!-- 双栏无缝核心亮点（教育 + 交通生活） -->
+  <section class="dual-band">
+    <div class="band-col">
+      <h2 class="sec-head">🎓 紧邻一七一中学，目送式陪读首选</h2>
+      <ul class="tight-list">
+        <li><strong>零距离省时安心：</strong>紧邻<strong>北京市第一七一中学</strong>，下楼步行几分钟即达校门，孩子早上多睡半小时，晚自习放学几分钟安全到家。</li>
+        <li><strong>全龄教育与高校环绕：</strong>周边另有汇佳幼儿园、西坝河第三幼儿园、国家林业局幼儿园，汇成中学、化工学院附中，以及对外经贸、北中医、北服等高校（入学政策以当年官方规定为准）。</li>
       </ul>
-    </section>
-
-    <!-- 分区说明各房间情况并配图 -->
-    <section class="card">
-      <h2>🏡 分空间装修与配置详情（点击照片可放大）</h2>
-      <p style="font-size:14px;color:var(--muted);margin-bottom:14px;">三年前用心精装，用料环保扎实，平时收拾得极干净，至今靓丽如新。7层黄金中低区，采光通风俱佳且无等电梯焦虑。</p>
-
-      <div class="room-list">
-        <!-- 1. 门厅与走廊 -->
-        <div class="room-card">
-          <div class="room-header">
-            <span class="room-title">🚪 门厅与走廊</span>
-            <span class="room-pill">入户整洁 · 动线流畅</span>
-          </div>
-          <p class="room-desc">入户门厅整洁明亮，预留充足换鞋与随手置物空间；走廊连接各功能区，动静分区清晰，墙面干净清爽。</p>
-          <div class="room-photos empty" id="photos-hallway" data-label="门厅与走廊实拍"></div>
-        </div>
-
-        <!-- 2. 客厅 -->
-        <div class="room-card">
-          <div class="room-header">
-            <span class="room-title">🛋️ 客厅与公共区域</span>
-            <span class="room-pill">精装地板墙面 · 空间方正</span>
-          </div>
-          <p class="room-desc">布局方正实用，老社区得房率高、无浪费面积。墙面与地面保养极好，干净亮堂，方便按自家生活习惯摆放沙发、餐桌及收纳柜。</p>
-          <div class="room-photos empty" id="photos-living" data-label="客厅实拍"></div>
-        </div>
-
-        <!-- 3. 主卧 -->
-        <div class="room-card">
-          <div class="room-header">
-            <span class="room-title">🛏️ 主卧室</span>
-            <span class="room-pill">宽敞明亮 · 已配空调</span>
-          </div>
-          <p class="room-desc">空间宽敞，采光充足且小区安静不吵。已配备<strong>品牌空调</strong>，充足的空间可轻松容纳双人床与大衣柜，适合家长或夫妻居住。</p>
-          <div class="room-photos empty" id="photos-master" data-label="主卧实拍"></div>
-        </div>
-
-        <!-- 4. 次卧 -->
-        <div class="room-card">
-          <div class="room-header">
-            <span class="room-title">📚 次卧室 / 孩子独立学习房</span>
-            <span class="room-pill">安静独立 · 适合陪读自习</span>
-          </div>
-          <p class="room-desc">独立安静，不受客厅干扰。非常适合作为孩子的卧室兼书房，可按孩子身高自由搭配护脊书桌、书架和单人床，营造专注学习环境。</p>
-          <div class="room-photos empty" id="photos-second" data-label="次卧实拍"></div>
-        </div>
-
-        <!-- 5. 厨房 -->
-        <div class="room-card">
-          <div class="room-header">
-            <span class="room-title">🍳 厨房</span>
-            <span class="room-pill">整体橱柜 · 已配冰箱</span>
-          </div>
-          <p class="room-desc">整体橱柜与灶具台面干净整洁、收纳充足，操作动线顺手，日常给孩子做早晚餐非常方便。室内已配齐<strong>品牌冰箱</strong>。</p>
-          <div class="room-photos empty" id="photos-kitchen" data-label="厨房实拍"></div>
-        </div>
-
-        <!-- 6. 卫生间 -->
-        <div class="room-card">
-          <div class="room-header">
-            <span class="room-title">🚿 卫生间</span>
-            <span class="room-pill">干净清爽 · 已配热水器</span>
-          </div>
-          <p class="room-desc">洁具与墙地砖保养极好、无异味，已配齐<strong>热水器</strong>即开即热；<strong>洗衣机</strong>如您需要，可负责为您配好。</p>
-          <div class="room-photos empty" id="photos-bath" data-label="卫生间实拍"></div>
-        </div>
-      </div>
-
-      <div class="note-box">
-        <strong>关于家具的真诚说明：</strong>上一任租客自带全套家具，将原配全新床、衣柜、餐桌椅处理掉了，实在可惜，因此本次不再统一配备活动家具——<strong>非常适合自带全套家具、或希望给孩子配置习惯睡的实木床与护脊书桌的陪读家庭</strong>。（若您希望配齐全新家具，月租不低于 <strong>8000 元</strong> 且租期满 <strong>三年</strong> 即可商量配置。）
-      </div>
-    </section>
-
-    <section class="card">
-      <h2>🚇 三地铁覆盖 + 夜班公交，通勤生活双满分</h2>
-      <ul>
-        <li><strong>地铁出行：</strong>步行可达 <strong>13号线柳芳站</strong>（往东一站即东直门），<strong>5号线和平里北街站、雍和宫站</strong>及 <strong>2号线雍和宫站</strong>均在覆盖范围内，往来望京、国贸、中关村极其顺畅。</li>
-        <li><strong>密集公交：</strong>和平里路口北有 13、62、117、123、406、674、684 路；夜里还有 <strong>201 路夜班车</strong>，加班晚归也不用打车。</li>
-        <li><strong>成熟生活圈：</strong>老牌安静社区，楼上楼下多为多年老邻居。菜市场、超市、药店、小饭馆全在步行范围，早买豆浆油条、晚带青菜上楼，日子过得从容顺心。</li>
+    </div>
+    <div class="band-col">
+      <h2 class="sec-head">🚇 三地铁覆盖 + 夜班公交，通勤生活双满分</h2>
+      <ul class="tight-list">
+        <li><strong>三地铁交汇：</strong>步行可达 <strong>13号线柳芳站</strong>（一站东直门），<strong>5号线和平里北街站、雍和宫站</strong>及 <strong>2号线雍和宫站</strong>均在覆盖内，通达望京、国贸、中关村。</li>
+        <li><strong>密集公交与成熟社区：</strong>和平里路口北有 13、62、117、123、406、674、684 路及 <strong>201 路夜班车</strong>；老牌安静社区，菜市场、超市、药店、餐饮全在步行范围。</li>
       </ul>
+    </div>
+  </section>
 
-      <!-- 地图定位与一键导航 -->
-      <div class="map-wrapper">
-        <iframe
-          class="map-frame"
-          loading="lazy"
-          referrerpolicy="no-referrer-when-downgrade"
-          title="朝阳和平街14区3号楼地图定位"
-          src="https://uri.amap.com/marker?position=116.4258,39.9585&name=%E6%9C%9D%E9%98%B3%E5%8C%BA%E5%92%8C%E5%B9%B3%E8%A1%97%E5%8D%81%E5%9B%9B%E5%8C%BA3%E5%8F%B7%E6%A5%BC&src=mypage&coordinate=gaode&callnative=0">
-        </iframe>
-        <div class="map-actions">
-          <span class="map-addr">📍 北京市朝阳区和平街十四区3号楼（紧邻一七一中学）</span>
-          <div class="map-btn-group">
-            <a class="map-link" href="https://uri.amap.com/marker?position=116.4258,39.9585&name=%E6%9C%9D%E9%98%B3%E5%8C%BA%E5%92%8C%E5%B9%B3%E8%A1%97%E5%8D%81%E5%9B%9B%E5%8C%BA3%E5%8F%B7%E6%A5%BC&coordinate=gaode&callnative=1" target="_blank" rel="noopener">🗺️ 高德地图定位</a>
-            <a class="map-link" href="https://api.map.baidu.com/marker?location=39.9645,116.4323&title=%E5%92%8C%E5%B9%B3%E8%A1%97%E5%8D%81%E5%9B%9B%E5%8C%BA3%E5%8F%B7%E6%A5%BC&content=%E5%8C%97%E4%BA%AC%E5%B8%82%E6%9C%9D%E9%98%B3%E5%8C%BA%E5%92%8C%E5%B9%B3%E8%A1%97%E5%8D%81%E5%9B%9B%E5%8C%BA3%E5%8F%B7%E6%A5%BC&output=html" target="_blank" rel="noopener">🧭 百度地图定位</a>
+  <!-- 六大空间无缝展示矩阵 -->
+  <section class="rooms-wrapper">
+    <div class="rooms-bar">
+      <h2>🏡 分空间装修与配置详情</h2>
+      <span>三年前用心精装 · 干净靓丽如新（有实拍图时点击可放大查看）</span>
+    </div>
+
+    <div class="room-grid">
+      <!-- 1. 门厅与走廊 -->
+      <div class="room-box">
+        <div>
+          <div class="room-top">
+            <span class="room-name">🚪 门厅与走廊</span>
+            <span class="room-tag">入户整洁 · 动线流畅</span>
           </div>
+          <p class="room-text">入户门厅整洁明亮，预留充足换鞋与随手置物空间；走廊连接各功能区，动静分区清晰，墙面干净清爽。</p>
         </div>
+        <div class="room-photos empty" id="photos-hallway" data-label="门厅与走廊实拍"></div>
       </div>
-    </section>
-  </main>
 
+      <!-- 2. 客厅 -->
+      <div class="room-box">
+        <div>
+          <div class="room-top">
+            <span class="room-name">🛋️ 客厅与公共区域</span>
+            <span class="room-tag">精装地板墙面 · 空间方正</span>
+          </div>
+          <p class="room-text">布局方正实用，老社区得房率高、无浪费面积。墙面与地面保养极好，干净亮堂，方便按自家生活习惯摆放沙发、餐桌及收纳柜。</p>
+        </div>
+        <div class="room-photos empty" id="photos-living" data-label="客厅实拍"></div>
+      </div>
+
+      <!-- 3. 主卧 -->
+      <div class="room-box">
+        <div>
+          <div class="room-top">
+            <span class="room-name">🛏️ 主卧室</span>
+            <span class="room-tag">宽敞明亮 · 已配空调</span>
+          </div>
+          <p class="room-text">空间宽敞，采光充足且小区安静不吵。已配备<strong>品牌空调</strong>，充足的空间可轻松容纳双人床与大衣柜，适合家长或夫妻居住。</p>
+        </div>
+        <div class="room-photos empty" id="photos-master" data-label="主卧实拍"></div>
+      </div>
+
+      <!-- 4. 次卧 -->
+      <div class="room-box">
+        <div>
+          <div class="room-top">
+            <span class="room-name">📚 次卧室 / 孩子独立学习房</span>
+            <span class="room-tag">安静独立 · 适合陪读自习</span>
+          </div>
+          <p class="room-text">独立安静，不受客厅干扰。非常适合作为孩子的卧室兼书房，可按孩子身高自由搭配护脊书桌、书架和单人床，营造专注学习环境。</p>
+        </div>
+        <div class="room-photos empty" id="photos-second" data-label="次卧实拍"></div>
+      </div>
+
+      <!-- 5. 厨房 -->
+      <div class="room-box">
+        <div>
+          <div class="room-top">
+            <span class="room-name">🍳 厨房</span>
+            <span class="room-tag">整体橱柜 · 已配冰箱</span>
+          </div>
+          <p class="room-text">整体橱柜与灶具台面干净整洁、收纳充足，操作动线顺手，日常给孩子做早晚餐非常方便。室内已配齐<strong>品牌冰箱</strong>。</p>
+        </div>
+        <div class="room-photos empty" id="photos-kitchen" data-label="厨房实拍"></div>
+      </div>
+
+      <!-- 6. 卫生间 -->
+      <div class="room-box">
+        <div>
+          <div class="room-top">
+            <span class="room-name">🚿 卫生间</span>
+            <span class="room-tag">干净清爽 · 已配热水器</span>
+          </div>
+          <p class="room-text">洁具与墙地砖保养极好、无异味，已配齐<strong>热水器</strong>即开即热；<strong>洗衣机</strong>如您需要，可负责为您配好。</p>
+        </div>
+        <div class="room-photos empty" id="photos-bath" data-label="卫生间实拍"></div>
+      </div>
+    </div>
+
+    <!-- 家具说明通栏提示条 -->
+    <div class="furniture-strip">
+      <strong>关于家具的真诚说明：</strong>上一任租客自带全套家具，将原配全新床、衣柜、餐桌椅处理掉了，实在可惜，因此本次不再统一配备活动家具——<strong>非常适合自带全套家具、或希望给孩子配置习惯睡的实木床与护脊书桌的陪读家庭</strong>。（若您希望配齐全新家具，月租不低于 <strong>8000 元</strong> 且租期满 <strong>三年</strong> 即可商量配置。）
+    </div>
+  </section>
+
+  <!-- 地图定位与一键导航无缝通栏 -->
+  <section class="map-band">
+    <div class="map-sidebar">
+      <div>
+        <h2 class="map-title">📍 地理位置与周边导航</h2>
+        <p class="map-desc" style="margin-top:8px;">
+          <strong>地址：</strong>北京市朝阳区和平街十四区3号楼一单元<br>
+          <strong>地标：</strong>紧邻北京市第一七一中学，步行可达地铁13号线柳芳站、5号线和平里北街站及2/5号线雍和宫站。
+        </p>
+      </div>
+      <div class="map-nav-btns">
+        <a class="map-link" href="https://uri.amap.com/marker?position=116.4258,39.9585&name=%E6%9C%9D%E9%98%B3%E5%8C%BA%E5%92%8C%E5%B9%B3%E8%A1%97%E5%8D%81%E5%9B%9B%E5%8C%BA3%E5%8F%B7%E6%A5%BC&coordinate=gaode&callnative=1" target="_blank" rel="noopener">🗺️ 高德地图定位</a>
+        <a class="map-link" href="https://api.map.baidu.com/marker?location=39.9645,116.4323&title=%E5%92%8C%E5%B9%B3%E8%A1%97%E5%8D%81%E5%9B%9B%E5%8C%BA3%E5%8F%B7%E6%A5%BC&content=%E5%8C%97%E4%BA%AC%E5%B8%82%E6%9C%9D%E9%98%B3%E5%8C%BA%E5%92%8C%E5%B9%B3%E8%A1%97%E5%8D%81%E5%9B%9B%E5%8C%BA3%E5%8F%B7%E6%A5%BC&output=html" target="_blank" rel="noopener">🧭 百度地图定位</a>
+      </div>
+    </div>
+    <iframe
+      class="map-frame"
+      loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade"
+      title="朝阳和平街14区3号楼地图定位"
+      src="https://uri.amap.com/marker?position=116.4258,39.9585&name=%E6%9C%9D%E9%98%B3%E5%8C%BA%E5%92%8C%E5%B9%B3%E8%A1%97%E5%8D%81%E5%9B%9B%E5%8C%BA3%E5%8F%B7%E6%A5%BC&src=mypage&coordinate=gaode&callnative=0">
+    </iframe>
+  </section>
+
+  <!-- 底部通栏操作栏 -->
   <div class="bottom-bar">
     <button class="btn btn-primary" id="wechat-btn" onclick="revealAndCopy()">🔒 点击查看微信：186****7704</button>
-    <button class="btn btn-outline" id="call-btn" onclick="callLandlord()">📞 拨号</button>
-    <button class="btn btn-outline" onclick="showQR()">📱 二维码</button>
+    <button class="btn btn-outline" id="call-btn" onclick="callLandlord()">📞 拨打电话</button>
+    <button class="btn btn-outline" onclick="showQR()">📱 分享二维码</button>
   </div>
 
   <!-- 大图预览 -->
@@ -431,10 +766,10 @@
   <!-- 二维码分享弹窗 -->
   <div class="modal" id="qr-modal" onclick="this.style.display='none'">
     <div class="modal-box" onclick="event.stopPropagation()">
-      <h3 style="font-size:17px;">扫码保存或转发给家人</h3>
+      <h3 style="font-size:16px;">扫码保存或转发给家人</h3>
       <img id="qr-img" src="" alt="网页二维码">
-      <p style="font-size:13px;color:#6b7280;margin-bottom:14px;">朝阳和平街14区3号楼一单元 · 直租</p>
-      <button class="btn btn-primary" style="width:100%;" onclick="document.getElementById('qr-modal').style.display='none'">关闭</button>
+      <p style="font-size:13px;color:#6b7280;margin-bottom:12px;">朝阳和平街14区3号楼一单元 · 直租</p>
+      <button class="modal-close" onclick="document.getElementById('qr-modal').style.display='none'">关闭</button>
     </div>
   </div>
 
@@ -455,7 +790,8 @@
 
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(fullNum).then(() => {
-          alert('微信号 ' + fullNum + ' 已解锁并复制！\n添加微信时备注“和平街租房”通过更快（中介勿扰）。');
+          alert('微信号 ' + fullNum + ' 已解锁并复制！
+添加微信时备注“和平街租房”通过更快（中介勿扰）。');
         }).catch(() => {
           prompt('已为您解锁微信号，请长按复制：', fullNum);
         });
@@ -481,7 +817,6 @@
       document.getElementById('qr-modal').style.display = 'flex';
     }
 
-    // 按需加载 heic2any 解码库（仅在检测到 .heic 图片时加载，避免影响纯 jpg/png 页面的打开速度）
     let heic2anyPromise = null;
     function getHeic2Any() {
       if (window.heic2any) return Promise.resolve(window.heic2any);
@@ -497,7 +832,6 @@
       return heic2anyPromise;
     }
 
-    // 六大分区各自独立探测对应实拍图（每间支持 5 张，兼容 jpg / jpeg / png / heic）
     (function loadRoomPhotos() {
       const roomMappings = [
         { containerId: 'photos-hallway', prefix: 'hallway' },
