@@ -169,6 +169,55 @@
       border-radius: 4px;
     }
 
+    /* 地图定位样式 */
+    .map-wrapper {
+      margin-top: 16px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      background: #f9fafb;
+    }
+    .map-frame {
+      width: 100%;
+      height: 280px;
+      border: 0;
+      display: block;
+    }
+    .map-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 12px;
+      background: #f8fafc;
+      border-top: 1px solid var(--border);
+      align-items: center;
+      justify-content: space-between;
+    }
+    .map-addr {
+      font-size: 13px;
+      color: #374151;
+      font-weight: 600;
+    }
+    .map-btn-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .map-link {
+      font-size: 12.5px;
+      font-weight: 600;
+      padding: 6px 10px;
+      border-radius: 6px;
+      text-decoration: none;
+      background: #ffffff;
+      color: var(--primary);
+      border: 1px solid #bfdbfe;
+      transition: background 0.2s;
+    }
+    .map-link:hover {
+      background: var(--primary-light);
+    }
+
     .note-box {
       background: #fffbeb;
       border-left: 4px solid var(--accent);
@@ -345,6 +394,24 @@
         <li><strong>密集公交：</strong>和平里路口北有 13、62、117、123、406、674、684 路；夜里还有 <strong>201 路夜班车</strong>，加班晚归也不用打车。</li>
         <li><strong>成熟生活圈：</strong>老牌安静社区，楼上楼下多为多年老邻居。菜市场、超市、药店、小饭馆全在步行范围，早买豆浆油条、晚带青菜上楼，日子过得从容顺心。</li>
       </ul>
+
+      <!-- 地图定位与一键导航 -->
+      <div class="map-wrapper">
+        <iframe
+          class="map-frame"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          title="朝阳和平街14区3号楼地图定位"
+          src="https://uri.amap.com/marker?position=116.4258,39.9585&name=%E6%9C%9D%E9%98%B3%E5%8C%BA%E5%92%8C%E5%B9%B3%E8%A1%97%E5%8D%81%E5%9B%9B%E5%8C%BA3%E5%8F%B7%E6%A5%BC&src=mypage&coordinate=gaode&callnative=0">
+        </iframe>
+        <div class="map-actions">
+          <span class="map-addr">📍 北京市朝阳区和平街十四区3号楼（紧邻一七一中学）</span>
+          <div class="map-btn-group">
+            <a class="map-link" href="https://uri.amap.com/marker?position=116.4258,39.9585&name=%E6%9C%9D%E9%98%B3%E5%8C%BA%E5%92%8C%E5%B9%B3%E8%A1%97%E5%8D%81%E5%9B%9B%E5%8C%BA3%E5%8F%B7%E6%A5%BC&coordinate=gaode&callnative=1" target="_blank" rel="noopener">🗺️ 高德地图定位</a>
+            <a class="map-link" href="https://api.map.baidu.com/marker?location=39.9645,116.4323&title=%E5%92%8C%E5%B9%B3%E8%A1%97%E5%8D%81%E5%9B%9B%E5%8C%BA3%E5%8F%B7%E6%A5%BC&content=%E5%8C%97%E4%BA%AC%E5%B8%82%E6%9C%9D%E9%98%B3%E5%8C%BA%E5%92%8C%E5%B9%B3%E8%A1%97%E5%8D%81%E5%9B%9B%E5%8C%BA3%E5%8F%B7%E6%A5%BC&output=html" target="_blank" rel="noopener">🧭 百度地图定位</a>
+          </div>
+        </div>
+      </div>
     </section>
   </main>
 
