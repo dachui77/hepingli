@@ -13,6 +13,7 @@
       --muted: #6b7280;
       --bg: #f3f4f6;
       --card: #ffffff;
+      --border: #e5e7eb;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -53,7 +54,7 @@
       justify-content: space-between;
       align-items: center;
       gap: 12px;
-      border-bottom: 1px solid #e5e7eb;
+      border-bottom: 1px solid var(--border);
       padding-bottom: 16px;
       margin-bottom: 16px;
     }
@@ -91,37 +92,96 @@
     }
     ul { padding-left: 18px; }
     li { margin-bottom: 10px; font-size: 15px; }
+
+    /* 分空间卡片样式 */
+    .room-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .room-card {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      background: #fafafa;
+    }
+    .room-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .room-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #1e3a8a;
+    }
+    .room-pill {
+      font-size: 12px;
+      background: #e0e7ff;
+      color: #1e40af;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-weight: 600;
+    }
+    .room-desc {
+      font-size: 14.5px;
+      color: #374151;
+      margin-bottom: 10px;
+    }
+    .room-photos {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .room-photos.empty {
+      display: none;
+    }
+    .photo-item {
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      position: relative;
+      background: #fff;
+    }
+    .photo-item img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.25s ease;
+    }
+    .photo-item:hover img {
+      transform: scale(1.03);
+    }
+    .photo-zoom-tip {
+      position: absolute;
+      right: 8px;
+      bottom: 8px;
+      background: rgba(0,0,0,0.55);
+      color: #fff;
+      font-size: 11px;
+      padding: 2px 7px;
+      border-radius: 4px;
+    }
+
     .note-box {
       background: #fffbeb;
       border-left: 4px solid var(--accent);
       padding: 14px 16px;
       border-radius: 8px;
       font-size: 14px;
-      margin-top: 12px;
-    }
-    .gallery-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 12px;
-    }
-    .photo-card {
-      border-radius: 10px;
-      overflow: hidden;
-      border: 1px solid #e5e7eb;
-      cursor: pointer;
-      background: #f9fafb;
-    }
-    .photo-card img {
-      width: 100%;
-      height: 170px;
-      object-fit: cover;
-      display: block;
+      margin-top: 16px;
     }
     .bottom-bar {
       position: fixed;
       bottom: 0; left: 0; right: 0;
       background: #ffffff;
-      border-top: 1px solid #e5e7eb;
+      border-top: 1px solid var(--border);
       padding: 10px 12px;
       display: flex;
       justify-content: center;
@@ -169,6 +229,7 @@
     }
     .modal-box img { width: 220px; height: 220px; margin: 12px auto; display: block; }
     .lightbox img { max-width: 95%; max-height: 82vh; border-radius: 8px; }
+    .lightbox-caption { color: #fff; margin-top: 10px; font-size: 14px; }
   </style>
 </head>
 <body>
@@ -186,7 +247,7 @@
         <div class="tags">
           <span class="tag highlight">签满两年可「押一付一」</span>
           <span class="tag">常规押一付三</span>
-          <span class="tag">仅限整租</span>
+          <span class="tag">仅限长租</span>
         </div>
       </div>
       <div class="grid-info">
@@ -197,12 +258,6 @@
       </div>
     </section>
 
-    <!-- 自动检测仓库根目录下的 01.jpg ~ 06.jpg，若未上传则自动隐藏 -->
-    <section class="card" id="gallery-section" style="display:none;">
-      <h2>📸 房屋实拍（点击查看大图）</h2>
-      <div class="gallery-grid" id="gallery-grid"></div>
-    </section>
-
     <section class="card">
       <h2>🎓 核心王牌：紧邻一七一中学，目送式陪读首选</h2>
       <ul>
@@ -211,12 +266,63 @@
       </ul>
     </section>
 
+    <!-- 分区说明各房间情况并配图 -->
     <section class="card">
-      <h2>🏡 房屋装修与配置说明</h2>
-      <ul>
-        <li><strong>精装保养极佳：</strong>三年前用心精装，用料环保扎实，平时收拾得极干净，至今靓丽如新。7层属于高层住宅黄金中低区，采光通风好且无等电梯焦虑。</li>
-        <li><strong>家电配置：</strong><strong>冰箱、空调、热水器</strong>均已配齐；<strong>洗衣机</strong>如您需要，房东可负责配好。</li>
-      </ul>
+      <h2>🏡 分空间装修与配置详情（点击照片可放大）</h2>
+      <p style="font-size:14px;color:var(--muted);margin-bottom:14px;">三年前用心精装，用料环保扎实，平时收拾得极干净，至今靓丽如新。7层黄金中低区，采光通风俱佳且无等电梯焦虑。</p>
+
+      <div class="room-list">
+        <!-- 1. 客厅 -->
+        <div class="room-card">
+          <div class="room-header">
+            <span class="room-title">🛋️ 客厅与公共区域</span>
+            <span class="room-pill">精装地板墙面 · 空间方正</span>
+          </div>
+          <p class="room-desc">布局方正实用，老社区得房率高、无浪费面积。墙面与地面保养极好，干净亮堂，方便按自家生活习惯摆放沙发、餐桌及收纳柜。</p>
+          <div class="room-photos empty" id="photos-living" data-label="客厅实拍"></div>
+        </div>
+
+        <!-- 2. 主卧 -->
+        <div class="room-card">
+          <div class="room-header">
+            <span class="room-title">🛏️ 主卧室</span>
+            <span class="room-pill">宽敞明亮 · 已配空调</span>
+          </div>
+          <p class="room-desc">空间宽敞，采光充足且小区安静不吵。已配备<strong>品牌空调</strong>，充足的空间可轻松容纳双人床与大衣柜，适合家长或夫妻居住。</p>
+          <div class="room-photos empty" id="photos-master" data-label="主卧实拍"></div>
+        </div>
+
+        <!-- 3. 次卧 -->
+        <div class="room-card">
+          <div class="room-header">
+            <span class="room-title">📚 次卧室 / 孩子独立学习房</span>
+            <span class="room-pill">安静独立 · 适合陪读自习</span>
+          </div>
+          <p class="room-desc">独立安静，不受客厅干扰。非常适合作为孩子的卧室兼书房，可按孩子身高自由搭配护脊书桌、书架和单人床，营造专注学习环境。</p>
+          <div class="room-photos empty" id="photos-second" data-label="次卧实拍"></div>
+        </div>
+
+        <!-- 4. 厨房 -->
+        <div class="room-card">
+          <div class="room-header">
+            <span class="room-title">🍳 厨房</span>
+            <span class="room-pill">整体橱柜 · 已配冰箱</span>
+          </div>
+          <p class="room-desc">整体橱柜与灶具台面干净整洁、收纳充足，操作动线顺手，日常给孩子做早晚餐非常方便。室内已配齐<strong>品牌冰箱</strong>。</p>
+          <div class="room-photos empty" id="photos-kitchen" data-label="厨房实拍"></div>
+        </div>
+
+        <!-- 5. 卫生间 -->
+        <div class="room-card">
+          <div class="room-header">
+            <span class="room-title">🚿 卫生间</span>
+            <span class="room-pill">干净清爽 · 已配热水器</span>
+          </div>
+          <p class="room-desc">洁具与墙地砖保养极好、无异味，已配齐<strong>热水器</strong>即开即热；<strong>洗衣机</strong>如您需要，房东可负责为您配好。</p>
+          <div class="room-photos empty" id="photos-bath" data-label="卫生间实拍"></div>
+        </div>
+      </div>
+
       <div class="note-box">
         <strong>关于家具的真诚说明：</strong>上一任租客自带全套家具，将原配全新床、衣柜、餐桌椅处理掉了，实在可惜，因此本次不再统一配备活动家具——<strong>非常适合自带全套家具、或希望给孩子配置习惯睡的实木床与护脊书桌的陪读家庭</strong>。（若您希望由房东配齐全新家具，月租不低于 <strong>8000 元</strong> 且租期满 <strong>三年</strong> 即可商量配置。）
       </div>
@@ -241,6 +347,7 @@
   <!-- 大图预览 -->
   <div class="modal lightbox" id="lightbox" onclick="this.style.display='none'">
     <img id="lb-img" src="" alt="房屋实拍">
+    <div class="lightbox-caption" id="lb-caption"></div>
   </div>
 
   <!-- 二维码分享弹窗 -->
@@ -254,7 +361,6 @@
   </div>
 
   <script>
-    // 分段拼接号码，防止静态爬虫直接从 HTML 源码抓取连续 11 位手机号
     const _p = ['186', '0019', '7704'];
     let isUnlocked = false;
 
@@ -297,24 +403,41 @@
       document.getElementById('qr-modal').style.display = 'flex';
     }
 
-    // 自动探测仓库根目录下的 01.jpg ~ 06.jpg
-    (function loadPhotos() {
-      const grid = document.getElementById('gallery-grid');
-      const section = document.getElementById('gallery-section');
-      ['01.jpg', '02.jpg', '03.jpg', '04.jpg', '05.jpg', '06.jpg'].forEach(file => {
-        const img = new Image();
-        img.src = file;
-        img.onload = () => {
-          section.style.display = 'block';
-          const card = document.createElement('div');
-          card.className = 'photo-card';
-          card.onclick = () => {
-            document.getElementById('lb-img').src = file;
-            document.getElementById('lightbox').style.display = 'flex';
+    // 五大分区各自独立探测对应实拍图
+    (function loadRoomPhotos() {
+      const roomMappings = [
+        { containerId: 'photos-living', files: ['living.jpg', 'living-1.jpg', 'living-2.jpg'] },
+        { containerId: 'photos-master', files: ['master.jpg', 'master-1.jpg', 'master-2.jpg'] },
+        { containerId: 'photos-second', files: ['second.jpg', 'second-1.jpg', 'second-2.jpg'] },
+        { containerId: 'photos-kitchen', files: ['kitchen.jpg', 'kitchen-1.jpg', 'kitchen-2.jpg'] },
+        { containerId: 'photos-bath', files: ['bath.jpg', 'bath-1.jpg', 'bath-2.jpg'] }
+      ];
+
+      roomMappings.forEach(room => {
+        const container = document.getElementById(room.containerId);
+        const label = container.getAttribute('data-label');
+
+        room.files.forEach(file => {
+          const img = new Image();
+          img.src = file;
+          img.alt = label;
+          img.onload = () => {
+            container.classList.remove('empty');
+            const item = document.createElement('div');
+            item.className = 'photo-item';
+            item.onclick = () => {
+              document.getElementById('lb-img').src = file;
+              document.getElementById('lb-caption').textContent = label;
+              document.getElementById('lightbox').style.display = 'flex';
+            };
+            const tip = document.createElement('span');
+            tip.className = 'photo-zoom-tip';
+            tip.textContent = '点击放大';
+            item.appendChild(img);
+            item.appendChild(tip);
+            container.appendChild(item);
           };
-          card.appendChild(img);
-          grid.appendChild(card);
-        };
+        });
       });
     })();
   </script>
