@@ -143,8 +143,10 @@
       justify-content: center;
       gap: 4px;
       white-space: nowrap;
+      transition: background 0.2s;
     }
     .btn-primary { background: var(--primary); color: #fff; }
+    .btn-unlocked { background: #059669; color: #fff; }
     .btn-outline { background: #f3f4f6; color: var(--text); }
     .modal {
       display: none;
@@ -231,8 +233,8 @@
   </main>
 
   <div class="bottom-bar">
-    <button class="btn btn-primary" onclick="copyWechat()">📋 复制微信：18600197704</button>
-    <a class="btn btn-outline" href="tel:18600197704">📞 拨号</a>
+    <button class="btn btn-primary" id="wechat-btn" onclick="revealAndCopy()">🔒 点击查看微信：186****7704</button>
+    <button class="btn btn-outline" id="call-btn" onclick="callLandlord()">📞 拨号</button>
     <button class="btn btn-outline" onclick="showQR()">📱 二维码</button>
   </div>
 
@@ -252,14 +254,41 @@
   </div>
 
   <script>
-    const WECHAT_ID = '18600197704';
+    // 分段拼接号码，防止静态爬虫直接从 HTML 源码抓取连续 11 位手机号
+    const _p = ['186', '0019', '7704'];
+    let isUnlocked = false;
 
-    function copyWechat() {
-      navigator.clipboard.writeText(WECHAT_ID).then(() => {
-        alert('房东微信号 ' + WECHAT_ID + ' 已复制！添加时备注“和平街租房”通过更快。');
-      }).catch(() => {
-        prompt('请长按复制房东微信号：', WECHAT_ID);
-      });
+    function getRealPhone() {
+      return _p.join('');
+    }
+
+    function revealAndCopy() {
+      const fullNum = getRealPhone();
+      const btn = document.getElementById('wechat-btn');
+      isUnlocked = true;
+      btn.textContent = '📋 复制微信：' + fullNum;
+      btn.className = 'btn btn-unlocked';
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(fullNum).then(() => {
+          alert('房东微信号 ' + fullNum + ' 已解锁并复制！\n添加微信时备注“和平街租房”通过更快（中介勿扰）。');
+        }).catch(() => {
+          prompt('已为您解锁房东微信号，请长按复制：', fullNum);
+        });
+      } else {
+        prompt('已为您解锁房东微信号，请长按复制：', fullNum);
+      }
+    }
+
+    function callLandlord() {
+      const fullNum = getRealPhone();
+      if (!isUnlocked) {
+        isUnlocked = true;
+        const btn = document.getElementById('wechat-btn');
+        btn.textContent = '📋 复制微信：' + fullNum;
+        btn.className = 'btn btn-unlocked';
+      }
+      window.location.href = 'tel:' + fullNum;
     }
 
     function showQR() {
@@ -268,7 +297,7 @@
       document.getElementById('qr-modal').style.display = 'flex';
     }
 
-    // 自动探测根目录下的 01.jpg ~ 06.jpg
+    // 自动探测仓库根目录下的 01.jpg ~ 06.jpg
     (function loadPhotos() {
       const grid = document.getElementById('gallery-grid');
       const section = document.getElementById('gallery-section');
