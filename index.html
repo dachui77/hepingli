@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>房东直租｜朝阳和平街14区3号楼一单元 · 紧邻一七一中学精装电梯两居</title>
+  <style>
+    :root {
+      --primary: #1e40af;
+      --primary-light: #eff6ff;
+      --accent: #d97706;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --bg: #f3f4f6;
+      --card: #ffffff;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      padding-bottom: 88px;
+    }
+    .hero {
+      background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+      color: #fff;
+      padding: 36px 20px 44px;
+      text-align: center;
+    }
+    .badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.18);
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+    .hero h1 { font-size: 24px; line-height: 1.35; margin-bottom: 10px; }
+    .hero p { font-size: 15px; opacity: 0.92; max-width: 640px; margin: 0 auto; }
+    .container { max-width: 820px; margin: -24px auto 0; padding: 0 16px; }
+    .card {
+      background: var(--card);
+      border-radius: 14px;
+      padding: 22px 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+    }
+    .price-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid #e5e7eb;
+      padding-bottom: 16px;
+      margin-bottom: 16px;
+    }
+    .price { font-size: 28px; font-weight: 800; color: #dc2626; }
+    .price span { font-size: 14px; font-weight: 400; color: var(--muted); }
+    .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tag {
+      background: var(--primary-light);
+      color: var(--primary);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 6px;
+    }
+    .tag.highlight { background: #fef3c7; color: #b45309; }
+    .grid-info {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
+    }
+    .info-box {
+      background: #f9fafb;
+      padding: 12px;
+      border-radius: 10px;
+    }
+    .info-label { font-size: 12px; color: var(--muted); }
+    .info-val { font-size: 15px; font-weight: 700; margin-top: 2px; }
+    h2 {
+      font-size: 18px;
+      margin-bottom: 14px;
+      color: #111827;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    ul { padding-left: 18px; }
+    li { margin-bottom: 10px; font-size: 15px; }
+    .note-box {
+      background: #fffbeb;
+      border-left: 4px solid var(--accent);
+      padding: 14px 16px;
+      border-radius: 8px;
+      font-size: 14px;
+      margin-top: 12px;
+    }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 12px;
+    }
+    .photo-card {
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid #e5e7eb;
+      cursor: pointer;
+      background: #f9fafb;
+    }
+    .photo-card img {
+      width: 100%;
+      height: 170px;
+      object-fit: cover;
+      display: block;
+    }
+    .bottom-bar {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      background: #ffffff;
+      border-top: 1px solid #e5e7eb;
+      padding: 10px 12px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.06);
+      z-index: 50;
+    }
+    .btn {
+      border: none;
+      border-radius: 10px;
+      padding: 11px 14px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      white-space: nowrap;
+    }
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-outline { background: #f3f4f6; color: var(--text); }
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      z-index: 100;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      padding: 20px;
+    }
+    .modal-box {
+      background: #fff;
+      padding: 24px;
+      border-radius: 16px;
+      text-align: center;
+      max-width: 320px;
+      width: 100%;
+    }
+    .modal-box img { width: 220px; height: 220px; margin: 12px auto; display: block; }
+    .lightbox img { max-width: 95%; max-height: 82vh; border-radius: 8px; }
+  </style>
+</head>
+<body>
+
+  <header class="hero">
+    <div class="badge">房东直租 · 无任何中介费</div>
+    <h1>朝阳和平街14区 3号楼一单元 整租</h1>
+    <p>紧邻北京市第一七一中学 · 7/20层黄金楼层带电梯 · 精装保养极佳 · 诚寻长租有缘人</p>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <div class="price-row">
+        <div class="price">7600 - 8000 <span>元/月（整租）</span></div>
+        <div class="tags">
+          <span class="tag highlight">签满两年可「押一付一」</span>
+          <span class="tag">常规押一付三</span>
+          <span class="tag">仅限长租</span>
+        </div>
+      </div>
+      <div class="grid-info">
+        <div class="info-box"><div class="info-label">户型格局</div><div class="info-val">两室一厅一卫一厨</div></div>
+        <div class="info-box"><div class="info-label">建筑面积</div><div class="info-val">约 66 平米</div></div>
+        <div class="info-box"><div class="info-label">楼层电梯</div><div class="info-val">7 层 / 共 20 层（有电梯）</div></div>
+        <div class="info-box"><div class="info-label">看房时间</div><div class="info-val">工作日19点后 / 周末全天</div></div>
+      </div>
+    </section>
+
+    <!-- 自动检测仓库根目录下的 01.jpg ~ 06.jpg，若未上传则自动隐藏 -->
+    <section class="card" id="gallery-section" style="display:none;">
+      <h2>📸 房屋实拍（点击查看大图）</h2>
+      <div class="gallery-grid" id="gallery-grid"></div>
+    </section>
+
+    <section class="card">
+      <h2>🎓 核心王牌：紧邻一七一中学，目送式陪读首选</h2>
+      <ul>
+        <li><strong>零距离省时安心：</strong>房子紧邻<strong>北京市第一七一中学</strong>，下楼步行几分钟即达校门。孩子早上多睡半小时，晚自习放学几分钟安全到家，彻底省去家长接送奔波。</li>
+        <li><strong>全龄教育与高校环绕：</strong>周边另有汇佳幼儿园、西坝河第三幼儿园、国家林业局幼儿园，汇成中学、化工学院附中，以及对外经贸、北中医、北服等高校，人文学习氛围浓厚（入学政策以当年官方规定为准）。</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>🏡 房屋装修与配置说明</h2>
+      <ul>
+        <li><strong>精装保养极佳：</strong>三年前用心精装，用料环保扎实，平时收拾得极干净，至今靓丽如新。7层属于高层住宅黄金中低区，采光通风好且无等电梯焦虑。</li>
+        <li><strong>家电配置：</strong><strong>冰箱、空调、热水器</strong>均已配齐；<strong>洗衣机</strong>如您需要，房东可负责配好。</li>
+      </ul>
+      <div class="note-box">
+        <strong>关于家具的真诚说明：</strong>上一任租客自带全套家具，将原配全新床、衣柜、餐桌椅处理掉了，实在可惜，因此本次不再统一配备活动家具——<strong>非常适合自带全套家具、或希望给孩子配置习惯睡的实木床与护脊书桌的陪读家庭</strong>。（若您希望由房东配齐全新家具，月租不低于 <strong>8000 元</strong> 且租期满 <strong>三年</strong> 即可商量配置。）
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>🚇 三地铁覆盖 + 夜班公交，通勤生活双满分</h2>
+      <ul>
+        <li><strong>地铁出行：</strong>步行可达 <strong>13号线柳芳站</strong>（往东一站即东直门），<strong>5号线和平里北街站、雍和宫站</strong>及 <strong>2号线雍和宫站</strong>均在覆盖范围内，去往望京、国贸、中关村极其顺畅。</li>
+        <li><strong>密集公交：</strong>和平里路口北有 13、62、117、123、406、674、684 路；夜里还有 <strong>201 路夜班车</strong>，加班晚归也不用打车。</li>
+        <li><strong>成熟生活圈：</strong>老牌安静社区，楼上楼下多为多年老邻居。菜市场、超市、药店、小饭馆全在步行范围，早买豆浆油条、晚带青菜上楼，日子过得从容顺心。</li>
+      </ul>
+    </section>
+  </main>
+
+  <div class="bottom-bar">
+    <button class="btn btn-primary" onclick="copyWechat()">📋 复制微信：18600197704</button>
+    <a class="btn btn-outline" href="tel:18600197704">📞 拨号</a>
+    <button class="btn btn-outline" onclick="showQR()">📱 二维码</button>
+  </div>
+
+  <!-- 大图预览 -->
+  <div class="modal lightbox" id="lightbox" onclick="this.style.display='none'">
+    <img id="lb-img" src="" alt="房屋实拍">
+  </div>
+
+  <!-- 二维码分享弹窗 -->
+  <div class="modal" id="qr-modal" onclick="this.style.display='none'">
+    <div class="modal-box" onclick="event.stopPropagation()">
+      <h3 style="font-size:17px;">扫码保存或转发给家人</h3>
+      <img id="qr-img" src="" alt="网页二维码">
+      <p style="font-size:13px;color:#6b7280;margin-bottom:14px;">朝阳和平街14区3号楼一单元 · 房东直租</p>
+      <button class="btn btn-primary" style="width:100%;" onclick="document.getElementById('qr-modal').style.display='none'">关闭</button>
+    </div>
+  </div>
+
+  <script>
+    const WECHAT_ID = '18600197704';
+
+    function copyWechat() {
+      navigator.clipboard.writeText(WECHAT_ID).then(() => {
+        alert('房东微信号 ' + WECHAT_ID + ' 已复制！添加时备注“和平街租房”通过更快。');
+      }).catch(() => {
+        prompt('请长按复制房东微信号：', WECHAT_ID);
+      });
+    }
+
+    function showQR() {
+      const pageUrl = encodeURIComponent(window.location.href);
+      document.getElementById('qr-img').src = 'https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=' + pageUrl;
+      document.getElementById('qr-modal').style.display = 'flex';
+    }
+
+    // 自动探测根目录下的 01.jpg ~ 06.jpg
+    (function loadPhotos() {
+      const grid = document.getElementById('gallery-grid');
+      const section = document.getElementById('gallery-section');
+      ['01.jpg', '02.jpg', '03.jpg', '04.jpg', '05.jpg', '06.jpg'].forEach(file => {
+        const img = new Image();
+        img.src = file;
+        img.onload = () => {
+          section.style.display = 'block';
+          const card = document.createElement('div');
+          card.className = 'photo-card';
+          card.onclick = () => {
+            document.getElementById('lb-img').src = file;
+            document.getElementById('lightbox').style.display = 'flex';
+          };
+          card.appendChild(img);
+          grid.appendChild(card);
+        };
+      });
+    })();
+  </script>
+</body>
+</html>
