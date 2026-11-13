@@ -237,7 +237,7 @@
   <header class="hero">
     <div class="badge">房东直租 · 无任何中介费</div>
     <h1>朝阳和平街14区 3号楼一单元 整租</h1>
-    <p>紧邻北京市第一七一中学 · 7/20层黄金楼层带电梯 · 精装保养极佳 · 诚寻长租有缘人</p>
+    <p>紧邻北京市第一七一中学 · 7/20层黄金楼层带电梯 · 精装保养极佳 · 诚寻整租有缘人</p>
   </header>
 
   <main class="container">
@@ -320,6 +320,16 @@
           </div>
           <p class="room-desc">洁具与墙地砖保养极好、无异味，已配齐<strong>热水器</strong>即开即热；<strong>洗衣机</strong>如您需要，房东可负责为您配好。</p>
           <div class="room-photos empty" id="photos-bath" data-label="卫生间实拍"></div>
+        </div>
+
+        <!-- 6. 门厅与走廊 -->
+        <div class="room-card">
+          <div class="room-header">
+            <span class="room-title">🚪 门厅与走廊</span>
+            <span class="room-pill">入户整洁 · 动线流畅</span>
+          </div>
+          <p class="room-desc">入户门厅整洁明亮，预留充足换鞋与随手置物空间；走廊连接各功能区，动静分区清晰，墙面干净清爽。</p>
+          <div class="room-photos empty" id="photos-hallway" data-label="门厅与走廊实拍"></div>
         </div>
       </div>
 
@@ -419,14 +429,15 @@
       return heic2anyPromise;
     }
 
-    // 五大分区各自独立探测对应实拍图（每间支持 5 张，兼容 jpg / jpeg / png / heic）
+    // 六大分区各自独立探测对应实拍图（每间支持 5 张，兼容 jpg / jpeg / png / heic）
     (function loadRoomPhotos() {
       const roomMappings = [
         { containerId: 'photos-living',  prefix: 'living' },
         { containerId: 'photos-master',  prefix: 'master' },
         { containerId: 'photos-second',  prefix: 'second' },
         { containerId: 'photos-kitchen', prefix: 'kitchen' },
-        { containerId: 'photos-bath',    prefix: 'bath' }
+        { containerId: 'photos-bath',    prefix: 'bath' },
+        { containerId: 'photos-hallway', prefix: 'hallway' }
       ];
       const suffixes = ['', '-1', '-2', '-3', '-4', '-5'];
       const extensions = ['jpg', 'jpeg', 'png', 'heic'];
