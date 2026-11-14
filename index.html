@@ -1068,6 +1068,11 @@
           throw new Error('未找到文档文件（请确认文件已上传到仓库根目录）');
         }
         const arrayBuffer = await res.arrayBuffer();
+        const headBytes = new Uint8Array(arrayBuffer.slice(0, 16));
+        if (ext === 'pdf' && String.fromCharCode(...headBytes.slice(0, 5)) !== '%PDF-') {
+          const previewText = new TextDecoder().decode(arrayBuffer.slice(0, 60)).replace(/\s+/g, ' ');
+          throw new Error('文件不是有效的 PDF（可能未上传成功、为 LFS 指针或返回了网页）：' + previewText);
+        }
 
         if (ext === 'pdf') {
           const pdfjsLib = await loadPdfJsWithMatchingWorker();
@@ -1160,17 +1165,47 @@
         grid.appendChild(card);
       }
 
+      async function verifyDocExists(url, ext) {
+        const controller = new AbortController();
+        try {
+          const res = await fetch(url, {
+            headers: { Range: 'bytes=0-15' },
+            signal: controller.signal
+          });
+          const ct = (res.headers.get('content-type') || '').toLowerCase();
+          if (!res.ok || ct.includes('text/html')) {
+            controller.abort();
+            return false;
+          }
+          let bytes;
+          if (res.body && res.body.getReader) {
+            const reader = res.body.getReader();
+            const { value } = await reader.read();
+            controller.abort();
+            bytes = value || new Uint8Array(0);
+          } else {
+            const buf = await res.arrayBuffer();
+            bytes = new Uint8Array(buf.slice(0, 16));
+          }
+          if (ext === 'pdf') {
+            return String.fromCharCode(...bytes.slice(0, 5)) === '%PDF-';
+          }
+          if (ext === 'docx' || ext === 'xlsx') {
+            return bytes.length >= 2 && bytes[0] === 0x50 && bytes[1] === 0x4B;
+          }
+          return true;
+        } catch (e) {
+          return false;
+        }
+      }
+
       // 1. 先探测自定义中文文件名文档
       for (let k = 0; k < CUSTOM_DOCS.length; k++) {
         const item = CUSTOM_DOCS[k];
         const ext = (item.file.split('.').pop() || '').toLowerCase();
-        try {
-          const res = await fetch(encodeURI(item.file), { method: 'HEAD' });
-          const ct = (res.headers.get('content-type') || '').toLowerCase();
-          if (res.ok && !ct.includes('text/html')) {
-            addDocCard(item.file, ext, item.title);
-          }
-        } catch (e) {}
+        if (await verifyDocExists(encodeURI(item.file), ext)) {
+          addDocCard(item.file, ext, item.title);
+        }
       }
 
       // 2. 再探测 doc-1 ~ doc-10
@@ -1178,15 +1213,11 @@
         for (let j = 0; j < docExts.length; j++) {
           const ext = docExts[j];
           const file = 'doc-' + i + '.' + ext;
-          try {
-            const res = await fetch(file, { method: 'HEAD' });
-            const ct = (res.headers.get('content-type') || '').toLowerCase();
-            if (res.ok && !ct.includes('text/html')) {
-              const title = DOC_TITLES[i] || ('房源资料 ' + i);
-              addDocCard(file, ext, title);
-              break;
-            }
-          } catch (e) {}
+          if (await verifyDocExists(file, ext)) {
+            const title = DOC_TITLES[i] || ('房源资料 ' + i);
+            addDocCard(file, ext, title);
+            break;
+          }
         }
       }
     })();
