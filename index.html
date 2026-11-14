@@ -225,7 +225,21 @@
       flex: 0 0 auto;
     }
     @media (min-width: 768px) {
-      .room-body { padding: 18px 22px; }
+      .room-body {
+        padding: 18px 22px;
+        min-height: 128px;
+      }
+      @supports (grid-template-rows: subgrid) {
+        .room-card {
+          display: grid;
+          grid-row: span 2;
+          grid-template-rows: subgrid;
+          row-gap: 0;
+        }
+        .room-body {
+          min-height: 0;
+        }
+      }
     }
     .room-header {
       display: flex;
