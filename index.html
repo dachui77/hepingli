@@ -21,12 +21,13 @@
     html, body {
       width: 100%;
       overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
     }
     body {
       font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
       background: var(--bg);
       color: var(--text);
-      line-height: 1.6;
+      line-height: 1.65;
       padding-bottom: 64px;
     }
 
@@ -41,16 +42,27 @@
     .badge {
       display: inline-block;
       background: rgba(255,255,255,0.16);
-      border: 1px solid rgba(255,255,255,0.24);
-      padding: 4px 12px;
+      border: 1px solid rgba(255,255,255,0.28);
+      padding: 4px 14px;
       border-radius: 999px;
       font-size: 12.5px;
       font-weight: 600;
       margin-bottom: 10px;
-      letter-spacing: 0.3px;
+      letter-spacing: 0.4px;
     }
-    .hero h1 { font-size: 24px; line-height: 1.3; margin-bottom: 8px; font-weight: 800; }
-    .hero p { font-size: 14.5px; opacity: 0.92; max-width: 760px; margin: 0 auto; }
+    .hero h1 {
+      font-size: clamp(21px, 3vw, 30px);
+      line-height: 1.3;
+      margin-bottom: 8px;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+    }
+    .hero p {
+      font-size: clamp(13.5px, 1.5vw, 15.5px);
+      opacity: 0.92;
+      max-width: 780px;
+      margin: 0 auto;
+    }
 
     /* 100% Full-bleed Zero-whitespace Bento Container */
     .bento-wrap {
@@ -69,14 +81,18 @@
       padding: 18px 16px;
       grid-column: span 12;
     }
-    .bento-card.rooms-section {
+    .bento-card.rooms-section,
+    .bento-card.docs-section {
       padding: 0;
+    }
+    .bento-card.docs-section.empty {
+      display: none;
     }
     .bento-span-6 { grid-column: span 12; }
 
     @media (min-width: 768px) {
-      .hero { padding: 34px 24px 36px; }
-      .bento-card { padding: 22px 24px; }
+      .hero { padding: 36px 24px 38px; }
+      .bento-card { padding: 24px 28px; }
       .bento-span-6 { grid-column: span 6; }
     }
 
@@ -91,7 +107,13 @@
       padding-bottom: 14px;
       margin-bottom: 14px;
     }
-    .price { font-size: 28px; font-weight: 800; color: #dc2626; line-height: 1.2; }
+    .price {
+      font-size: clamp(26px, 3vw, 32px);
+      font-weight: 800;
+      color: #dc2626;
+      line-height: 1.2;
+      font-variant-numeric: tabular-nums;
+    }
     .price span { font-size: 14px; font-weight: 500; color: var(--muted); }
     .tags { display: flex; flex-wrap: wrap; gap: 6px; }
     .tag {
@@ -155,9 +177,9 @@
       background: #f8fafc;
       color: var(--primary);
       border: 1px solid #cbd5e1;
-      transition: background 0.15s;
+      transition: background 0.15s, border-color 0.15s;
     }
-    .map-btn:hover { background: var(--primary-light); }
+    .map-btn:hover { background: var(--primary-light); border-color: #93c5fd; }
 
     /* 6-Zone Full-bleed Bento/Mosaic Rooms */
     .section-head {
@@ -170,7 +192,7 @@
       background: var(--card);
     }
     @media (min-width: 768px) {
-      .section-head { padding: 22px 24px 16px; }
+      .section-head { padding: 22px 28px 16px; }
     }
     .section-sub { font-size: 13.5px; color: var(--muted); }
 
@@ -202,7 +224,7 @@
       padding: 16px;
     }
     @media (min-width: 768px) {
-      .room-body { padding: 18px 20px; }
+      .room-body { padding: 18px 22px; }
     }
     .room-header {
       display: flex;
@@ -210,7 +232,7 @@
       align-items: center;
       flex-wrap: wrap;
       gap: 6px;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
     }
     .room-title {
       font-size: 15.5px;
@@ -297,9 +319,10 @@
       right: 6px;
       bottom: 6px;
       background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(4px);
       color: #fff;
       font-size: 11px;
-      padding: 2px 6px;
+      padding: 2px 7px;
       border-radius: 4px;
     }
 
@@ -312,10 +335,83 @@
       color: #78350f;
     }
     @media (min-width: 768px) {
-      .note-box { padding: 16px 24px; }
+      .note-box { padding: 16px 28px; }
     }
 
-    /* Bottom Action Bar */
+    /* Documents Bento Module (View-Only, Up to 10 Docs) */
+    .docs-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2px;
+      background: var(--border);
+      border-top: 2px solid var(--border);
+    }
+    @media (min-width: 640px) {
+      .docs-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (min-width: 1024px) {
+      .docs-grid { grid-template-columns: repeat(5, 1fr); }
+    }
+    .doc-card {
+      background: #f8fafc;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      cursor: pointer;
+      transition: background 0.15s;
+      border: none;
+      text-align: left;
+      width: 100%;
+    }
+    .doc-card:hover { background: var(--primary-light); }
+    .doc-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+    .doc-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11.5px;
+      font-weight: 800;
+      flex-shrink: 0;
+      color: #fff;
+      letter-spacing: 0.3px;
+    }
+    .doc-icon.pdf { background: #dc2626; }
+    .doc-icon.docx { background: #2563eb; }
+    .doc-icon.xlsx { background: #059669; }
+    .doc-meta { min-width: 0; }
+    .doc-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .doc-sub {
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .doc-view-tag {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--primary);
+      background: #e0e7ff;
+      padding: 3px 8px;
+      border-radius: 6px;
+      flex-shrink: 0;
+    }
+
+    /* Bottom Action Bar (Mobile-safe responsive) */
     .bottom-bar {
       position: fixed;
       bottom: 0; left: 0; right: 0;
@@ -323,19 +419,19 @@
       background: rgba(255, 255, 255, 0.96);
       backdrop-filter: blur(8px);
       border-top: 1px solid var(--border);
-      padding: 10px 12px;
+      padding: 8px 10px;
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       box-shadow: 0 -2px 10px rgba(0,0,0,0.06);
       z-index: 50;
     }
     .btn {
       border: none;
       border-radius: 8px;
-      padding: 10px 14px;
-      font-size: 14px;
+      padding: 10px 12px;
+      font-size: 13.5px;
       font-weight: 700;
       cursor: pointer;
       text-decoration: none;
@@ -344,18 +440,30 @@
       justify-content: center;
       gap: 4px;
       white-space: nowrap;
-      transition: background 0.2s;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .btn:active { transform: scale(0.98); }
+    #wechat-btn {
+      flex: 1 1 auto;
+      max-width: 300px;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    @media (min-width: 640px) {
+      .bottom-bar { gap: 10px; padding: 10px 16px; }
+      .btn { padding: 10px 16px; font-size: 14px; }
     }
     .btn-primary { background: var(--primary); color: #fff; }
     .btn-unlocked { background: #059669; color: #fff; }
-    .btn-outline { background: #f1f5f9; color: var(--text); border: 1px solid var(--border); }
+    .btn-outline { background: #f1f5f9; color: var(--text); border: 1px solid var(--border); flex-shrink: 0; }
 
     /* Modals */
     .modal {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.86);
+      background: rgba(0,0,0,0.88);
       z-index: 100;
       justify-content: center;
       align-items: center;
@@ -371,8 +479,153 @@
       width: 100%;
     }
     .modal-box img { width: 220px; height: 220px; margin: 12px auto; display: block; }
-    .lightbox img { max-width: 95%; max-height: 82vh; border-radius: 8px; }
+    .lightbox-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.28);
+      background: rgba(15,23,42,0.7);
+      color: #fff;
+      font-size: 18px;
+      line-height: 1;
+      cursor: pointer;
+    }
+    .lightbox img { max-width: 95%; max-height: 82vh; border-radius: 8px; object-fit: contain; }
     .lightbox-caption { color: #fff; margin-top: 10px; font-size: 14px; }
+
+    /* View-Only Document Modal */
+    .doc-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.92);
+      z-index: 120;
+      flex-direction: column;
+    }
+    .doc-modal-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      background: #0f172a;
+      color: #fff;
+      border-bottom: 1px solid #334155;
+      flex-shrink: 0;
+    }
+    .doc-modal-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+    }
+    .doc-modal-title {
+      font-size: 15px;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .doc-readonly-pill {
+      font-size: 11.5px;
+      background: rgba(245, 158, 11, 0.2);
+      color: #fcd34d;
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      padding: 2px 8px;
+      border-radius: 999px;
+      flex-shrink: 0;
+    }
+    .doc-close-btn {
+      background: #334155;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .doc-modal-body {
+      flex: 1;
+      overflow: auto;
+      padding: 16px;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+    .doc-viewer-surface {
+      max-width: 900px;
+      margin: 0 auto;
+      background: #fff;
+      color: #111827;
+      border-radius: 8px;
+      padding: 20px;
+      min-height: 200px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.35);
+      line-height: 1.7;
+    }
+    .doc-viewer-surface h1,
+    .doc-viewer-surface h2,
+    .doc-viewer-surface h3 {
+      margin: 14px 0 8px;
+      color: #0f172a;
+    }
+    .doc-viewer-surface p {
+      margin-bottom: 10px;
+      font-size: 14.5px;
+    }
+    .doc-viewer-surface canvas {
+      display: block;
+      width: 100%;
+      height: auto;
+      margin-bottom: 12px;
+      border: 1px solid #e2e8f0;
+    }
+    .doc-viewer-surface table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      margin-bottom: 16px;
+    }
+    .doc-viewer-surface th,
+    .doc-viewer-surface td {
+      border: 1px solid #cbd5e1;
+      padding: 6px 8px;
+      text-align: left;
+    }
+    .doc-viewer-surface th {
+      background: #f1f5f9;
+      font-weight: 700;
+    }
+    .sheet-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+    .sheet-tab {
+      padding: 5px 10px;
+      border: 1px solid #cbd5e1;
+      background: #f8fafc;
+      border-radius: 6px;
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .sheet-tab.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+    .doc-loading {
+      text-align: center;
+      padding: 40px 16px;
+      color: var(--muted);
+      font-size: 14px;
+    }
   </style>
 </head>
 <body>
@@ -509,6 +762,15 @@
         <strong>关于家具的真诚说明：</strong>上一任租客自带全套家具，我也只能忍痛将全新床、衣柜、餐桌椅处理掉了，实在可惜！因此不再考虑配家具——<strong>非常适合自带全套家具、或希望给孩子配置习惯睡的实木床与书桌的陪读家庭</strong>。（若您希望由业主配齐全新家具，月租不低于 <strong>8000 元</strong> 且租期不少于 <strong>三年</strong> 即可商量配置。）
       </div>
     </section>
+
+    <!-- 房源文档与资料 Bento（最多 10 份，仅限在线查看） -->
+    <section class="bento-card docs-section empty" id="docs-section">
+      <div class="section-head">
+        <h2 style="margin-bottom:0;">📄 房源资料与文档（仅限在线查看）</h2>
+        <span class="section-sub">支持 PDF / Word / Excel 在线预览，不提供下载</span>
+      </div>
+      <div class="docs-grid" id="docs-grid"></div>
+    </section>
   </main>
 
   <div class="bottom-bar">
@@ -519,6 +781,7 @@
 
   <!-- 大图预览 -->
   <div class="modal lightbox" id="lightbox" onclick="this.style.display='none'">
+    <button class="lightbox-close" type="button" aria-label="关闭" onclick="document.getElementById('lightbox').style.display='none'">✕</button>
     <img id="lb-img" src="" alt="房屋实拍">
     <div class="lightbox-caption" id="lb-caption"></div>
   </div>
@@ -530,6 +793,20 @@
       <img id="qr-img" src="" alt="网页二维码">
       <p style="font-size:13px;color:#6b7280;margin-bottom:14px;">朝阳和平街14区3号楼 · 个人直租</p>
       <button class="btn btn-primary" style="width:100%;" onclick="document.getElementById('qr-modal').style.display='none'">关闭</button>
+    </div>
+  </div>
+
+  <!-- 仅查看文档预览弹窗（无下载按钮，禁用右键与选中） -->
+  <div class="doc-modal" id="doc-modal" oncontextmenu="return false;">
+    <div class="doc-modal-bar">
+      <div class="doc-modal-title-wrap">
+        <span class="doc-modal-title" id="doc-modal-title">文档预览</span>
+        <span class="doc-readonly-pill">仅限查看 · 不可下载</span>
+      </div>
+      <button class="doc-close-btn" onclick="closeDocModal()">关闭</button>
+    </div>
+    <div class="doc-modal-body">
+      <div class="doc-viewer-surface" id="doc-viewer-surface"></div>
     </div>
   </div>
 
@@ -576,20 +853,33 @@
       document.getElementById('qr-modal').style.display = 'flex';
     }
 
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') {
+        document.getElementById('lightbox').style.display = 'none';
+        document.getElementById('qr-modal').style.display = 'none';
+        closeDocModal();
+      }
+    });
+
+    // 通用脚本按需加载器
+    const scriptCache = {};
+    function loadScriptOnce(src) {
+      if (scriptCache[src]) return scriptCache[src];
+      scriptCache[src] = new Promise((resolve, reject) => {
+        const s = document.createElement('script');
+        s.src = src;
+        s.onload = resolve;
+        s.onerror = () => reject(new Error('脚本加载失败: ' + src));
+        document.head.appendChild(s);
+      });
+      return scriptCache[src];
+    }
+
     // 按需加载 heic2any 解码库（仅在检测到 .heic 图片时加载，避免影响纯 jpg/png 页面的打开速度）
-    let heic2anyPromise = null;
     function getHeic2Any() {
       if (window.heic2any) return Promise.resolve(window.heic2any);
-      if (!heic2anyPromise) {
-        heic2anyPromise = new Promise((resolve, reject) => {
-          const s = document.createElement('script');
-          s.src = 'https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js';
-          s.onload = () => resolve(window.heic2any);
-          s.onerror = () => reject(new Error('heic2any 加载失败'));
-          document.head.appendChild(s);
-        });
-      }
-      return heic2anyPromise;
+      return loadScriptOnce('https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js')
+        .then(() => window.heic2any);
     }
 
     // 六大分区按固定顺序各自独立探测实拍图（每间最多支持 5 张，兼容 jpg / jpeg / png / heic）
@@ -684,6 +974,135 @@
 
         probeSlot(0, 0);
       });
+    })();
+
+    // =========================================================================
+    // 房源文档模块：自动探测仓库根目录 doc-1 ~ doc-10（兼容 pdf / docx / xlsx）
+    // 你可以在下方 DOC_TITLES 自定义每份文档的展示名称，不改也会显示默认名称
+    // =========================================================================
+    const DOC_TITLES = {
+      1: '租房合同范本',
+      2: '户型尺寸图',
+      3: '物业与供暖说明',
+      4: '家电与设施清单',
+      5: '水电燃气费用说明',
+      6: '小区及周边指引',
+      7: '交接验房确认表',
+      8: '补充条款说明',
+      9: '房屋配套文件',
+      10: '其他相关资料'
+    };
+
+    function closeDocModal() {
+      document.getElementById('doc-modal').style.display = 'none';
+      document.getElementById('doc-viewer-surface').innerHTML = '';
+    }
+
+    async function openDocPreview(file, ext, title) {
+      const modal = document.getElementById('doc-modal');
+      const surface = document.getElementById('doc-viewer-surface');
+      document.getElementById('doc-modal-title').textContent = title + ' (.' + ext + ')';
+      surface.innerHTML = '<div class="doc-loading">正在安全加载文档预览，请稍候...</div>';
+      modal.style.display = 'flex';
+
+      try {
+        const res = await fetch(file);
+        if (!res.ok) throw new Error('文档读取失败');
+        const arrayBuffer = await res.arrayBuffer();
+
+        if (ext === 'pdf') {
+          await loadScriptOnce('https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js');
+          window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
+          const pdf = await window.pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+          const renderScale = Math.min(window.devicePixelRatio || 1.5, 2) * 1.4;
+          surface.innerHTML = '';
+          for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+            const page = await pdf.getPage(pageNum);
+            const viewport = page.getViewport({ scale: renderScale });
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = viewport.width;
+            canvas.height = viewport.height;
+            await page.render({ canvasContext: ctx, viewport: viewport }).promise;
+            surface.appendChild(canvas);
+          }
+        } else if (ext === 'docx') {
+          await loadScriptOnce('https://cdn.jsdelivr.net/npm/mammoth@1.6.0/mammoth.browser.min.js');
+          const result = await window.mammoth.convertToHtml({ arrayBuffer: arrayBuffer });
+          surface.innerHTML = result.value || '<div class="doc-loading">文档内容为空</div>';
+        } else if (ext === 'xlsx') {
+          await loadScriptOnce('https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js');
+          const workbook = window.XLSX.read(arrayBuffer, { type: 'array' });
+          surface.innerHTML = '';
+          const tabs = document.createElement('div');
+          tabs.className = 'sheet-tabs';
+          const tableWrap = document.createElement('div');
+          tableWrap.style.overflowX = 'auto';
+
+          function renderSheet(sheetName, activeBtn) {
+            Array.from(tabs.children).forEach(b => b.classList.remove('active'));
+            if (activeBtn) activeBtn.classList.add('active');
+            const html = window.XLSX.utils.sheet_to_html(workbook.Sheets[sheetName]);
+            tableWrap.innerHTML = html;
+          }
+
+          workbook.SheetNames.forEach((name, idx) => {
+            const btn = document.createElement('button');
+            btn.className = 'sheet-tab' + (idx === 0 ? ' active' : '');
+            btn.textContent = name;
+            btn.onclick = () => renderSheet(name, btn);
+            tabs.appendChild(btn);
+          });
+
+          if (workbook.SheetNames.length > 1) {
+            surface.appendChild(tabs);
+          }
+          surface.appendChild(tableWrap);
+          if (workbook.SheetNames.length > 0) {
+            renderSheet(workbook.SheetNames[0], tabs.children[0]);
+          }
+        }
+      } catch (err) {
+        surface.innerHTML = '<div class="doc-loading">预览加载失败，请稍后刷新重试。</div>';
+      }
+    }
+
+    (async function loadRoomDocs() {
+      const section = document.getElementById('docs-section');
+      const grid = document.getElementById('docs-grid');
+      const docExts = ['pdf', 'docx', 'xlsx'];
+
+      for (let i = 1; i <= 10; i++) {
+        for (let j = 0; j < docExts.length; j++) {
+          const ext = docExts[j];
+          const file = 'doc-' + i + '.' + ext;
+          try {
+            const res = await fetch(file, { method: 'HEAD' });
+            if (res.ok) {
+              section.classList.remove('empty');
+              const title = DOC_TITLES[i] || ('相关文档 ' + i);
+              const card = document.createElement('button');
+              card.type = 'button';
+              card.className = 'doc-card';
+              card.onclick = () => openDocPreview(file, ext, title);
+              card.innerHTML = `
+                <div class="doc-info">
+                  <div class="doc-icon ${ext}">${ext.toUpperCase()}</div>
+                  <div class="doc-meta">
+                    <div class="doc-name">${title}</div>
+                    <div class="doc-sub">${file} · 在线预览</div>
+                  </div>
+                </div>
+                <span class="doc-view-tag">查看</span>
+              `;
+              grid.appendChild(card);
+              break;
+            }
+          } catch (e) {
+            // 忽略不存在的文件
+          }
+        }
+      }
     })();
   </script>
 </body>
