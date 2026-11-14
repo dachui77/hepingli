@@ -865,7 +865,7 @@
       }
     });
 
-    // 通用脚本按需加载器
+    // 通用脚本按需加载器（支持多 CDN 自动切换，适配国内网络）
     const scriptCache = {};
     function loadScriptOnce(src) {
       if (scriptCache[src]) return scriptCache[src];
@@ -873,17 +873,36 @@
         const s = document.createElement('script');
         s.src = src;
         s.onload = resolve;
-        s.onerror = () => reject(new Error('脚本加载失败: ' + src));
+        s.onerror = () => {
+          delete scriptCache[src];
+          reject(new Error('脚本加载失败: ' + src));
+        };
         document.head.appendChild(s);
       });
       return scriptCache[src];
     }
 
+    async function loadFirstAvailable(urls) {
+      let lastErr = null;
+      for (let i = 0; i < urls.length; i++) {
+        try {
+          await loadScriptOnce(urls[i]);
+          return urls[i];
+        } catch (err) {
+          lastErr = err;
+        }
+      }
+      throw lastErr || new Error('组件加载失败');
+    }
+
     // 按需加载 heic2any 解码库（仅在检测到 .heic 图片时加载，避免影响纯 jpg/png 页面的打开速度）
     function getHeic2Any() {
       if (window.heic2any) return Promise.resolve(window.heic2any);
-      return loadScriptOnce('https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js')
-        .then(() => window.heic2any);
+      return loadFirstAvailable([
+        'https://cdn.bootcdn.net/ajax/libs/heic2any/0.0.4/heic2any.min.js',
+        'https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js',
+        'https://unpkg.com/heic2any@0.0.4/dist/heic2any.min.js'
+      ]).then(() => window.heic2any);
     }
 
     // 六大分区按固定顺序各自独立探测实拍图（每间最多支持 5 张，兼容 jpg / jpeg / png / heic）
@@ -982,25 +1001,57 @@
     })();
 
     // =========================================================================
-    // 房源文档模块：自动探测仓库根目录 doc-1 ~ doc-10（兼容 pdf / docx / xlsx）
-    // 你可以在下方 DOC_TITLES 自定义每份文档的展示名称，不改也会显示默认名称
+    // 房源文档模块：同时支持固定中文文件名（CUSTOM_DOCS）与 doc-1 ~ doc-10 自动探测
     // =========================================================================
+    const CUSTOM_DOCS = [
+      { file: '北京市房屋建筑使用说明书.pdf', title: '北京市房屋建筑使用说明书' }
+    ];
+
     const DOC_TITLES = {
-      1: '租房合同范本',
-      2: '户型尺寸图',
-      3: '物业与供暖说明',
-      4: '家电与设施清单',
-      5: '水电燃气费用说明',
-      6: '小区及周边指引',
-      7: '交接验房确认表',
-      8: '补充条款说明',
-      9: '房屋配套文件',
-      10: '其他相关资料'
+      1: '北京市房屋建筑使用说明书',
+      2: '房源资料 2',
+      3: '房源资料 3',
+      4: '房源资料 4',
+      5: '房源资料 5',
+      6: '房源资料 6',
+      7: '房源资料 7',
+      8: '房源资料 8',
+      9: '房源资料 9',
+      10: '房源资料 10'
     };
 
     function closeDocModal() {
       document.getElementById('doc-modal').style.display = 'none';
       document.getElementById('doc-viewer-surface').innerHTML = '';
+    }
+
+    async function loadPdfJsWithMatchingWorker() {
+      const pdfCdns = [
+        {
+          lib: 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js',
+          worker: 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js'
+        },
+        {
+          lib: 'https://cdn.bootcdn.net/ajax/libs/pdf.js/3.11.174/pdf.min.js',
+          worker: 'https://cdn.bootcdn.net/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js'
+        },
+        {
+          lib: 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js',
+          worker: 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js'
+        }
+      ];
+      for (let i = 0; i < pdfCdns.length; i++) {
+        try {
+          await loadScriptOnce(pdfCdns[i].lib);
+          if (window.pdfjsLib) {
+            window.pdfjsLib.GlobalWorkerOptions.workerSrc = pdfCdns[i].worker;
+            return window.pdfjsLib;
+          }
+        } catch (e) {
+          // 尝试下一个 CDN
+        }
+      }
+      throw new Error('PDF 渲染组件加载失败，请检查网络后重试');
     }
 
     async function openDocPreview(file, ext, title) {
@@ -1011,14 +1062,16 @@
       modal.style.display = 'flex';
 
       try {
-        const res = await fetch(file);
-        if (!res.ok) throw new Error('文档读取失败');
+        const res = await fetch(encodeURI(file));
+        const ct = (res.headers.get('content-type') || '').toLowerCase();
+        if (!res.ok || ct.includes('text/html')) {
+          throw new Error('未找到文档文件（请确认文件已上传到仓库根目录）');
+        }
         const arrayBuffer = await res.arrayBuffer();
 
         if (ext === 'pdf') {
-          await loadScriptOnce('https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js');
-          window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
-          const pdf = await window.pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+          const pdfjsLib = await loadPdfJsWithMatchingWorker();
+          const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
           const renderScale = Math.min(window.devicePixelRatio || 1.5, 2) * 1.4;
           surface.innerHTML = '';
           for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
@@ -1028,15 +1081,23 @@
             const ctx = canvas.getContext('2d');
             canvas.width = viewport.width;
             canvas.height = viewport.height;
-            await page.render({ canvasContext: ctx, viewport: viewport }).promise;
             surface.appendChild(canvas);
+            await page.render({ canvasContext: ctx, viewport: viewport }).promise;
           }
         } else if (ext === 'docx') {
-          await loadScriptOnce('https://cdn.jsdelivr.net/npm/mammoth@1.6.0/mammoth.browser.min.js');
+          await loadFirstAvailable([
+            'https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js',
+            'https://cdn.bootcdn.net/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js',
+            'https://cdn.jsdelivr.net/npm/mammoth@1.6.0/mammoth.browser.min.js'
+          ]);
           const result = await window.mammoth.convertToHtml({ arrayBuffer: arrayBuffer });
           surface.innerHTML = result.value || '<div class="doc-loading">文档内容为空</div>';
         } else if (ext === 'xlsx') {
-          await loadScriptOnce('https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js');
+          await loadFirstAvailable([
+            'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js',
+            'https://cdn.bootcdn.net/ajax/libs/xlsx/0.18.5/xlsx.full.min.js',
+            'https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js'
+          ]);
           const workbook = window.XLSX.read(arrayBuffer, { type: 'array' });
           surface.innerHTML = '';
           const tabs = document.createElement('div');
@@ -1068,7 +1129,7 @@
           }
         }
       } catch (err) {
-        surface.innerHTML = '<div class="doc-loading">预览加载失败，请稍后刷新重试。</div>';
+        surface.innerHTML = '<div class="doc-loading">预览加载失败：' + (err && err.message ? err.message : '请稍后刷新重试') + '</div>';
       }
     }
 
@@ -1076,7 +1137,43 @@
       const section = document.getElementById('docs-section');
       const grid = document.getElementById('docs-grid');
       const docExts = ['pdf', 'docx', 'xlsx'];
+      const addedFiles = new Set();
 
+      function addDocCard(file, ext, title) {
+        if (addedFiles.has(file)) return;
+        addedFiles.add(file);
+        section.classList.remove('empty');
+        const card = document.createElement('button');
+        card.type = 'button';
+        card.className = 'doc-card';
+        card.onclick = () => openDocPreview(file, ext, title);
+        card.innerHTML = `
+          <div class="doc-info">
+            <div class="doc-icon ${ext}">${ext.toUpperCase()}</div>
+            <div class="doc-meta">
+              <div class="doc-name">${title}</div>
+              <div class="doc-sub">${file} · 在线预览</div>
+            </div>
+          </div>
+          <span class="doc-view-tag">查看</span>
+        `;
+        grid.appendChild(card);
+      }
+
+      // 1. 先探测自定义中文文件名文档
+      for (let k = 0; k < CUSTOM_DOCS.length; k++) {
+        const item = CUSTOM_DOCS[k];
+        const ext = (item.file.split('.').pop() || '').toLowerCase();
+        try {
+          const res = await fetch(encodeURI(item.file), { method: 'HEAD' });
+          const ct = (res.headers.get('content-type') || '').toLowerCase();
+          if (res.ok && !ct.includes('text/html')) {
+            addDocCard(item.file, ext, item.title);
+          }
+        } catch (e) {}
+      }
+
+      // 2. 再探测 doc-1 ~ doc-10
       for (let i = 1; i <= 10; i++) {
         for (let j = 0; j < docExts.length; j++) {
           const ext = docExts[j];
@@ -1085,28 +1182,11 @@
             const res = await fetch(file, { method: 'HEAD' });
             const ct = (res.headers.get('content-type') || '').toLowerCase();
             if (res.ok && !ct.includes('text/html')) {
-              section.classList.remove('empty');
-              const title = DOC_TITLES[i] || ('相关文档 ' + i);
-              const card = document.createElement('button');
-              card.type = 'button';
-              card.className = 'doc-card';
-              card.onclick = () => openDocPreview(file, ext, title);
-              card.innerHTML = `
-                <div class="doc-info">
-                  <div class="doc-icon ${ext}">${ext.toUpperCase()}</div>
-                  <div class="doc-meta">
-                    <div class="doc-name">${title}</div>
-                    <div class="doc-sub">${file} · 在线预览</div>
-                  </div>
-                </div>
-                <span class="doc-view-tag">查看</span>
-              `;
-              grid.appendChild(card);
+              const title = DOC_TITLES[i] || ('房源资料 ' + i);
+              addDocCard(file, ext, title);
               break;
             }
-          } catch (e) {
-            // 忽略不存在的文件
-          }
+          } catch (e) {}
         }
       }
     })();
