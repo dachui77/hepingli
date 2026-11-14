@@ -644,7 +644,7 @@
     <!-- 核心概览 Bento -->
     <section class="bento-card">
       <div class="price-row">
-        <div class="price">7500 - 8000 <span>元/月（整租/年）</span></div>
+        <div class="price">7500 - 8000 <span>元/月（1年/租期）</span></div>
         <div class="tags">
           <span class="tag highlight">满两年可「押一付一」</span>
           <span class="tag">常规押一付三</span>
@@ -696,7 +696,7 @@
               <span class="room-title">🚪 门厅与走廊</span>
               <span class="room-pill">入户整洁 · 动线流畅</span>
             </div>
-            <p class="room-desc">入户门厅整洁明亮，走廊衔接客厅、卧室与厨卫，空间利用率高，方便日常换鞋与随手物品归置，门厅与客厅有隔墙充分保护隐私。</p>
+            <p class="room-desc">入户门厅整洁明亮，走廊衔接客厅、卧室与厨卫，空间利用率高，方便日常换鞋与随手物品归置，门厅与客厅有墙相隔，充分保护隐私。</p>
           </div>
           <div class="room-photos empty" id="photos-hallway" data-label="门厅与走廊实拍"></div>
         </div>
@@ -708,7 +708,7 @@
               <span class="room-title">🛋️ 客厅与公共区域</span>
               <span class="room-pill">精装地板墙面 · 空间方正</span>
             </div>
-            <p class="room-desc">老社区虽旧，但是楼是三年前翻建的，也是附近唯一的新楼，城建专业设计、建造，布局方正实用，无浪费面积。墙面与地面保养极好，干净亮堂，方便按自家生活习惯摆放沙发、餐桌及收纳柜。</p>
+            <p class="room-desc">虽是老社区，但是楼是三年前在原址新建的，也是附近唯一的新楼，由城建专业设计并建造，布局方正实用，无浪费面积。墙面与地面保养极好，干净亮堂，方便按自家生活习惯摆放沙发、餐桌及收纳柜。</p>
           </div>
           <div class="room-photos empty" id="photos-living" data-label="客厅实拍"></div>
         </div>
@@ -732,7 +732,7 @@
               <span class="room-title">📚 次卧室 / 孩子独立学习房</span>
               <span class="room-pill">安静独立 · 适合陪读自习</span>
             </div>
-            <p class="room-desc">独立安静，不受客厅干扰。非常适合作为孩子的卧室兼书房，可按孩子身高自由搭配书桌、书架和单人床，营造专注学习环境。</p>
+            <p class="room-desc">独立安静，不受客厅干扰。非常适合作为孩子的卧室兼书房，可按自由搭配书桌、书架和单人床，营造专注学习环境。</p>
           </div>
           <div class="room-photos empty" id="photos-second" data-label="次卧实拍"></div>
         </div>
@@ -744,7 +744,7 @@
               <span class="room-title">🍳 厨房</span>
               <span class="room-pill">整体橱柜 · 已配冰箱</span>
             </div>
-            <p class="room-desc">整体橱柜与灶具台面干净整洁、收纳充足，操作动线顺手，日常给孩子做早晚餐非常方便。室内已配齐<strong>品牌冰箱</strong>。</p>
+            <p class="room-desc">整体橱柜与灶具台面干净整洁、收纳充足，操作顺手，日常给孩子做早晚餐非常方便。室内已配齐<strong>品牌冰箱</strong>。</p>
           </div>
           <div class="room-photos empty" id="photos-kitchen" data-label="厨房实拍"></div>
         </div>
@@ -763,7 +763,7 @@
       </div>
 
       <div class="note-box">
-        <strong>关于家具的真诚说明：</strong>上一任租客自带全套家具，我也只能忍痛将全新床、衣柜、餐桌椅处理掉了，实在可惜！因此不再考虑配家具——<strong>非常适合自带全套家具、或希望给孩子配置习惯睡的实木床与书桌的陪读家庭</strong>。（若您希望由业主配齐全新家具，月租不低于 <strong>8000 元</strong> 且租期不少于 <strong>三年</strong> 即可商量配置。）
+        <strong>关于家具的真诚说明：</strong>上一任租客自带全套家具，我也只能忍痛将全新床、衣柜、餐桌椅处理掉了，着实花费不少，实在可惜！因此不再考虑配家具——<strong>非常适合自带全套家具、或希望给孩子配置习惯睡的实木床与书桌的陪读家庭</strong>。（若您希望配齐全新家具，月租不低于 <strong>8000 元</strong> 且租期不少于 <strong>三年</strong> 即可商量配置。）
       </div>
     </section>
 
@@ -895,17 +895,7 @@
       throw lastErr || new Error('组件加载失败');
     }
 
-    // 按需加载 heic2any 解码库（仅在检测到 .heic 图片时加载，避免影响纯 jpg/png 页面的打开速度）
-    function getHeic2Any() {
-      if (window.heic2any) return Promise.resolve(window.heic2any);
-      return loadFirstAvailable([
-        'https://cdn.bootcdn.net/ajax/libs/heic2any/0.0.4/heic2any.min.js',
-        'https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js',
-        'https://unpkg.com/heic2any@0.0.4/dist/heic2any.min.js'
-      ]).then(() => window.heic2any);
-    }
-
-    // 六大分区按固定顺序各自独立探测实拍图（每间最多支持 5 张，兼容 jpg / jpeg / png / heic）
+    // 六大分区并发加载 .jpg 实拍图（每间最多 5 张，按槽位顺序展示，无串行等待）
     (function loadRoomPhotos() {
       const roomMappings = [
         { containerId: 'photos-hallway', prefix: 'hallway' },
@@ -916,87 +906,47 @@
         { containerId: 'photos-bath',    prefix: 'bath' }
       ];
       const suffixes = ['', '-1', '-2', '-3', '-4', '-5'];
-      const extensions = ['jpg', 'jpeg', 'png', 'heic'];
 
       roomMappings.forEach(room => {
         const container = document.getElementById(room.containerId);
         const label = container.getAttribute('data-label');
-        let loadedCount = 0;
+        const loadedSlots = new Array(suffixes.length).fill(null);
 
-        function appendPhoto(imgEl, displaySrc) {
-          if (loadedCount >= 5) return;
-          loadedCount += 1;
+        function renderOrderedPhotos() {
+          const valid = loadedSlots.filter(Boolean).slice(0, 5);
+          if (valid.length === 0) return;
+          container.innerHTML = '';
           container.classList.remove('empty', 'count-1', 'count-2', 'count-3', 'count-4', 'count-5');
-          container.classList.add('count-' + loadedCount);
+          container.classList.add('count-' + valid.length);
 
-          const item = document.createElement('div');
-          item.className = 'photo-item';
-          item.onclick = () => {
-            document.getElementById('lb-img').src = displaySrc;
-            document.getElementById('lb-caption').textContent = label;
-            document.getElementById('lightbox').style.display = 'flex';
-          };
-          const tip = document.createElement('span');
-          tip.className = 'photo-zoom-tip';
-          tip.textContent = '点击放大';
-          item.appendChild(imgEl);
-          item.appendChild(tip);
-          container.appendChild(item);
+          valid.forEach(entry => {
+            const item = document.createElement('div');
+            item.className = 'photo-item';
+            item.onclick = () => {
+              document.getElementById('lb-img').src = entry.src;
+              document.getElementById('lb-caption').textContent = label;
+              document.getElementById('lightbox').style.display = 'flex';
+            };
+            const tip = document.createElement('span');
+            tip.className = 'photo-zoom-tip';
+            tip.textContent = '点击放大';
+            item.appendChild(entry.img);
+            item.appendChild(tip);
+            container.appendChild(item);
+          });
         }
 
-        function probeSlot(slotIdx, extIdx) {
-          if (slotIdx >= suffixes.length || loadedCount >= 5) return;
-          if (extIdx >= extensions.length) {
-            probeSlot(slotIdx + 1, 0);
-            return;
-          }
-
-          const ext = extensions[extIdx];
-          const file = room.prefix + suffixes[slotIdx] + '.' + ext;
-
-          if (ext === 'heic') {
-            fetch(file)
-              .then(res => {
-                const ct = (res.headers.get('content-type') || '').toLowerCase();
-                if (!res.ok || ct.includes('text/html')) throw new Error('not found');
-                return res.blob();
-              })
-              .then(blob => getHeic2Any().then(converter => converter({
-                blob: blob,
-                toType: 'image/jpeg',
-                quality: 0.85
-              })))
-              .then(converted => {
-                const outBlob = Array.isArray(converted) ? converted[0] : converted;
-                const objectUrl = URL.createObjectURL(outBlob);
-                const img = new Image();
-                img.alt = label;
-                img.onload = () => {
-                  appendPhoto(img, objectUrl);
-                  probeSlot(slotIdx + 1, 0);
-                };
-                img.onerror = () => probeSlot(slotIdx, extIdx + 1);
-                img.src = objectUrl;
-              })
-              .catch(() => {
-                probeSlot(slotIdx, extIdx + 1);
-              });
-            return;
-          }
-
+        suffixes.forEach((suffix, slotIdx) => {
+          const file = room.prefix + suffix + '.jpg';
           const img = new Image();
           img.alt = label;
+          img.decoding = 'async';
           img.onload = () => {
-            appendPhoto(img, file);
-            probeSlot(slotIdx + 1, 0);
-          };
-          img.onerror = () => {
-            probeSlot(slotIdx, extIdx + 1);
+            loadedSlots[slotIdx] = { img: img, src: file };
+            renderOrderedPhotos();
           };
           img.src = file;
-        }
-
-        probeSlot(0, 0);
+        });
       });
     })();
 
@@ -1165,57 +1115,42 @@
         grid.appendChild(card);
       }
 
-      async function verifyDocExists(url, ext) {
-        const controller = new AbortController();
+      async function verifyDocExists(url) {
         try {
-          const res = await fetch(url, {
-            headers: { Range: 'bytes=0-15' },
-            signal: controller.signal
-          });
+          const res = await fetch(url, { method: 'HEAD' });
           const ct = (res.headers.get('content-type') || '').toLowerCase();
-          if (!res.ok || ct.includes('text/html')) {
-            controller.abort();
-            return false;
-          }
-          let bytes;
-          if (res.body && res.body.getReader) {
-            const reader = res.body.getReader();
-            const { value } = await reader.read();
-            controller.abort();
-            bytes = value || new Uint8Array(0);
-          } else {
-            const buf = await res.arrayBuffer();
-            bytes = new Uint8Array(buf.slice(0, 16));
-          }
-          if (ext === 'pdf') {
-            return String.fromCharCode(...bytes.slice(0, 5)) === '%PDF-';
-          }
-          if (ext === 'docx' || ext === 'xlsx') {
-            return bytes.length >= 2 && bytes[0] === 0x50 && bytes[1] === 0x4B;
-          }
-          return true;
+          return res.ok && !ct.includes('text/html');
         } catch (e) {
           return false;
         }
       }
 
-      // 1. 先探测自定义中文文件名文档
+      // 1. 先探测自定义中文文件名文档（同时兼容大小写后缀）
       for (let k = 0; k < CUSTOM_DOCS.length; k++) {
         const item = CUSTOM_DOCS[k];
-        const ext = (item.file.split('.').pop() || '').toLowerCase();
-        if (await verifyDocExists(encodeURI(item.file), ext)) {
-          addDocCard(item.file, ext, item.title);
+        const dotIdx = item.file.lastIndexOf('.');
+        const base = dotIdx > -1 ? item.file.slice(0, dotIdx) : item.file;
+        const rawExt = dotIdx > -1 ? item.file.slice(dotIdx + 1) : '';
+        const extLower = rawExt.toLowerCase();
+        const candidates = [item.file, base + '.' + extLower, base + '.' + extLower.toUpperCase()];
+        for (let c = 0; c < candidates.length; c++) {
+          if (await verifyDocExists(encodeURI(candidates[c]))) {
+            addDocCard(candidates[c], extLower, item.title);
+            break;
+          }
         }
       }
 
-      // 2. 再探测 doc-1 ~ doc-10
+      // 2. 再探测 doc-1 ~ doc-10（兼容小写与大写后缀）
+      const allExts = ['pdf', 'PDF', 'docx', 'DOCX', 'xlsx', 'XLSX'];
       for (let i = 1; i <= 10; i++) {
-        for (let j = 0; j < docExts.length; j++) {
-          const ext = docExts[j];
-          const file = 'doc-' + i + '.' + ext;
-          if (await verifyDocExists(file, ext)) {
+        for (let j = 0; j < allExts.length; j++) {
+          const rawExt = allExts[j];
+          const extLower = rawExt.toLowerCase();
+          const file = 'doc-' + i + '.' + rawExt;
+          if (await verifyDocExists(file)) {
             const title = DOC_TITLES[i] || ('房源资料 ' + i);
-            addDocCard(file, ext, title);
+            addDocCard(file, extLower, title);
             break;
           }
         }
