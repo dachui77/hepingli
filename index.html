@@ -276,16 +276,15 @@
       color: var(--text-secondary);
     }
 
-    /* Adaptive Zero-whitespace Mosaic Photo Grid (1 to 5 photos) */
+    /* Adaptive Zero-whitespace Mosaic Photo Grid (1 to 9 photos, no stretching) */
     .room-photos {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      grid-auto-rows: 1fr;
       gap: 2px;
       background: var(--border);
       border-top: 2px solid var(--border);
       width: 100%;
-      flex: 1 1 auto;
+      align-self: start;
     }
     .room-photos.empty {
       display: none;
@@ -297,7 +296,20 @@
       background: #cbd5e1;
       aspect-ratio: 4 / 3;
       width: 100%;
-      height: 100%;
+    }
+    @media (min-width: 768px) {
+      .room-card.full-span .room-photos {
+        grid-template-columns: repeat(4, 1fr) !important;
+      }
+      .room-card.full-span .room-photos .photo-item {
+        grid-column: span 1 !important;
+        aspect-ratio: 4 / 3 !important;
+      }
+    }
+    @media (min-width: 1280px) {
+      .room-card.full-span .room-photos {
+        grid-template-columns: repeat(5, 1fr) !important;
+      }
     }
     .room-photos.count-1 {
       grid-template-columns: 1fr;
@@ -935,7 +947,7 @@
       throw lastErr || new Error('组件加载失败');
     }
 
-    // 并发加载 .jpg 实拍图（支持中文命名与原英文命名兼容，每板块最多 10 张）
+    // 并发加载 .jpg 实拍图（支持中文命名与原英文命名兼容，每板块最多 9 张）
     (function loadRoomPhotos() {
       const roomMappings = [
         { containerId: 'photos-hallway',   prefixes: ['门厅', '走廊', '玄关', '门厅与走廊', 'hallway'] },
@@ -946,7 +958,7 @@
         { containerId: 'photos-bath',      prefixes: ['卫生间', '洗手间', '浴室', 'bath'] },
         { containerId: 'photos-community', prefixes: ['小区', '楼道', '电梯', '车库', '车位', '小区与楼道', 'community'] }
       ];
-      const suffixes = ['', '-1', '-2', '-3', '-4', '-5', '-6', '-7', '-8', '-9', '-10', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
+      const suffixes = ['', '-1', '-2', '-3', '-4', '-5', '-6', '-7', '-8', '-9', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
       const exts = ['.jpg', '.JPG', '.jpeg', '.png'];
 
       roomMappings.forEach(room => {
@@ -964,7 +976,7 @@
         const loadedSlots = new Array(candidates.length).fill(null);
 
         function renderOrderedPhotos() {
-          const valid = loadedSlots.filter(Boolean).slice(0, 10);
+          const valid = loadedSlots.filter(Boolean).slice(0, 9);
           if (valid.length === 0) return;
           container.innerHTML = '';
           container.classList.remove('empty', 'count-1', 'count-2', 'count-3', 'count-4', 'count-5', 'count-6', 'count-7', 'count-8', 'count-9', 'count-10');
