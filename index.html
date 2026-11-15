@@ -958,7 +958,7 @@
         { containerId: 'photos-community', prefixes: ['小区', '楼道', '电梯', '车库', '车位', '小区与楼道', 'community'] }
       ];
       const suffixes = ['', ' ', '-1', '-2', '-3', '-4', '-5', '-6', '-7', '-8', '-9', '_1', '_2', '_3', '_4', '_5', '_6', '_7', '_8', '_9', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
-      const exts = ['.jpg', '.JPG', '.jpeg', '.png'];
+      const exts = ['.jpg', '.jpeg', '.png'];
 
       roomMappings.forEach(room => {
         const container = document.getElementById(room.containerId);
@@ -975,7 +975,17 @@
         const loadedSlots = new Array(candidates.length).fill(null);
 
         function renderOrderedPhotos() {
-          const valid = loadedSlots.filter(Boolean).slice(0, 9);
+          const seenKeys = new Set();
+          const valid = [];
+          for (let i = 0; i < loadedSlots.length; i++) {
+            const item = loadedSlots[i];
+            if (!item) continue;
+            const key = item.src.toLowerCase();
+            if (seenKeys.has(key)) continue;
+            seenKeys.add(key);
+            valid.push(item);
+            if (valid.length >= 9) break;
+          }
           if (valid.length === 0) return;
           container.innerHTML = '';
           container.classList.remove('empty', 'count-1', 'count-2', 'count-3', 'count-4', 'count-5', 'count-6', 'count-7', 'count-8', 'count-9', 'count-10');
