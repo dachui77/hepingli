@@ -949,27 +949,27 @@
     // 并发加载 .jpg 实拍图（支持中文命名与原英文命名兼容，每板块最多 9 张）
     (function loadRoomPhotos() {
       const roomMappings = [
-        { containerId: 'photos-hallway',   prefixes: ['门厅', '走廊', '玄关', '门厅与走廊', 'hallway'] },
-        { containerId: 'photos-living',    prefixes: ['客厅', '客餐厅', '公共区域', '客厅与公共区域', 'living'] },
-        { containerId: 'photos-master',    prefixes: ['主卧', '主卧室', 'master'] },
-        { containerId: 'photos-second',    prefixes: ['次卧', '书房', '学习房', '儿童房', '次卧室', 'second'] },
-        { containerId: 'photos-kitchen',   prefixes: ['厨房', 'kitchen'] },
-        { containerId: 'photos-bath',      prefixes: ['卫生间', '洗手间', '浴室', 'bath'] },
-        { containerId: 'photos-community', prefixes: ['小区', '楼道', '电梯', '车库', '车位', '小区与楼道', 'community'] }
+        { containerId: 'photos-hallway',   prefixes: ['门厅', '玄关', '走廊'] },
+        { containerId: 'photos-living',    prefixes: ['客厅'], extra: ['客厅.png'] },
+        { containerId: 'photos-master',    prefixes: ['主卧'] },
+        { containerId: 'photos-second',    prefixes: ['次卧', '书房'] },
+        { containerId: 'photos-kitchen',   prefixes: ['厨房'] },
+        { containerId: 'photos-bath',      prefixes: ['卫生间'] },
+        { containerId: 'photos-community', prefixes: ['小区', '楼道'] }
       ];
-      const suffixes = ['', ' ', '-1', '-2', '-3', '-4', '-5', '-6', '-7', '-8', '-9', '_1', '_2', '_3', '_4', '_5', '_6', '_7', '_8', '_9', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
-      const exts = ['.jpg', '.jpeg', '.png'];
+      const suffixes = ['', '-1', '-2', '-3', '-4', '-5', '-6', '-7', '-8', '-9'];
 
       roomMappings.forEach(room => {
         const container = document.getElementById(room.containerId);
         if (!container) return;
         const label = container.getAttribute('data-label');
         const candidates = [];
+        if (room.extra) {
+          room.extra.forEach(f => candidates.push(f));
+        }
         room.prefixes.forEach(prefix => {
           suffixes.forEach(suffix => {
-            exts.forEach(ext => {
-              candidates.push(prefix + suffix + ext);
-            });
+            candidates.push(prefix + suffix + '.jpg');
           });
         });
         const loadedSlots = new Array(candidates.length).fill(null);
@@ -996,7 +996,7 @@
             item.className = 'photo-item';
             item.onclick = () => {
               document.getElementById('lb-img').src = entry.src;
-              document.getElementById('lb-caption').textContent = label;
+              document.getElementById('lb-caption').textContent = label + '（' + decodeURIComponent(entry.src) + '）';
               document.getElementById('lightbox').style.display = 'flex';
             };
             const tip = document.createElement('span');
