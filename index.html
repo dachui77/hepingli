@@ -719,7 +719,7 @@
               <span class="room-title">🚪 门厅与走廊</span>
               <span class="room-pill">入户整洁 · 动线流畅</span>
             </div>
-            <p class="room-desc">入户门厅整洁明亮，走廊衔接客厅、卧室与厨卫，空间利用率高，方便日常换鞋与随手物品归置，门厅与客厅有墙相隔，充分保护隐私。</p>
+            <p class="room-desc">入户门厅整洁明亮，走廊衔接客厅、卧室与厨卫，空间利用率高，方便日常换鞋与随手物品归置，门厅与客厅有墙相隔，充分保护隐私。入户门与走廊有门相隔，形成一个独立空间，约10坪，属于额外收获。</p>
           </div>
           <div class="room-photos empty" id="photos-hallway" data-label="门厅与走廊实拍"></div>
         </div>
@@ -791,7 +791,7 @@
               <span class="room-title">🏘️ 小区与楼道</span>
               <span class="room-pill">成熟社区 · 整洁电梯楼道</span>
             </div>
-            <p class="room-desc">位于朝阳区和平街14区3号楼（20层带电梯新楼），成熟社区环境安静、生活配套齐全；单元门禁管理，电梯及公共楼道日常维护整洁。</p>
+            <p class="room-desc">位于朝阳区和平街14区3号楼（20层带电梯新楼），成熟社区环境安静、生活配套齐全；单元门禁管理，电梯及公共楼道日常维护整洁；配有<strong>地下四层公共停车位</strong>，500元/月。</p>
           </div>
           <div class="room-photos empty" id="photos-community" data-label="小区与楼道实拍"></div>
         </div>
@@ -933,15 +933,16 @@
     // 并发加载 .jpg 实拍图（支持中文命名与原英文命名兼容，每板块最多 5 张）
     (function loadRoomPhotos() {
       const roomMappings = [
-        { containerId: 'photos-hallway',   prefixes: ['门厅', 'hallway'] },
+        { containerId: 'photos-hallway',   prefixes: ['门厅', '门厅与走廊', 'hallway'] },
         { containerId: 'photos-living',    prefixes: ['客厅', 'living'] },
-        { containerId: 'photos-master',    prefixes: ['主卧', 'master'] },
-        { containerId: 'photos-second',    prefixes: ['次卧', 'second'] },
+        { containerId: 'photos-master',    prefixes: ['主卧', '主卧室', 'master'] },
+        { containerId: 'photos-second',    prefixes: ['次卧', '次卧室', 'second'] },
         { containerId: 'photos-kitchen',   prefixes: ['厨房', 'kitchen'] },
         { containerId: 'photos-bath',      prefixes: ['卫生间', 'bath'] },
-        { containerId: 'photos-community', prefixes: ['小区', '楼道', 'community'] }
+        { containerId: 'photos-community', prefixes: ['小区', '楼道', '小区与楼道', '小区及楼道', '小区楼道', 'community'] }
       ];
-      const suffixes = ['', '-1', '-2', '-3', '-4', '-5'];
+      const suffixes = ['', '-1', '-2', '-3', '-4', '-5', '1', '2', '3', '4', '5'];
+      const exts = ['.jpg', '.JPG', '.jpeg', '.png'];
 
       roomMappings.forEach(room => {
         const container = document.getElementById(room.containerId);
@@ -950,7 +951,9 @@
         const candidates = [];
         room.prefixes.forEach(prefix => {
           suffixes.forEach(suffix => {
-            candidates.push(prefix + suffix + '.jpg');
+            exts.forEach(ext => {
+              candidates.push(prefix + suffix + ext);
+            });
           });
         });
         const loadedSlots = new Array(candidates.length).fill(null);
