@@ -181,7 +181,7 @@
     }
     .map-btn:hover { background: var(--primary-light); border-color: #93c5fd; }
 
-    /* 6-Zone Full-bleed Bento/Mosaic Rooms */
+    /* Full-bleed Bento/Mosaic Rooms */
     .section-head {
       display: flex;
       flex-wrap: wrap;
@@ -240,6 +240,15 @@
           min-height: 0;
         }
       }
+    }
+    .room-card.full-span {
+      grid-column: 1 / -1;
+      display: flex;
+      flex-direction: column;
+      grid-row: auto;
+    }
+    .room-card.full-span .room-body {
+      min-height: 0;
     }
     .room-header {
       display: flex;
@@ -695,7 +704,7 @@
       </div>
     </section>
 
-    <!-- 六大分区 Bento/Mosaic 展示 -->
+    <!-- 六大分区 + 小区与楼道 Bento/Mosaic 展示 -->
     <section class="bento-card rooms-section">
       <div class="section-head">
         <h2 style="margin-bottom:0;">🏡 六大空间装修与配置详情（点击照片可放大）</h2>
@@ -773,6 +782,18 @@
             <p class="room-desc">卫生间采用<strong>干湿分离</strong>设计，早晚洗漱与淋浴互不干扰；洁具与墙地砖保养极好、无异味，配有<strong>热水器</strong>即开即热；<strong>洗衣机</strong>如您需要，可为您配好。</p>
           </div>
           <div class="room-photos empty" id="photos-bath" data-label="卫生间实拍"></div>
+        </div>
+
+        <!-- 7. 小区与楼道（通栏全宽） -->
+        <div class="room-card full-span">
+          <div class="room-body">
+            <div class="room-header">
+              <span class="room-title">🏘️ 小区与楼道</span>
+              <span class="room-pill">成熟社区 · 整洁电梯楼道</span>
+            </div>
+            <p class="room-desc">位于朝阳区和平街14区3号楼（20层带电梯新楼），成熟社区环境安静、生活配套齐全；单元门禁管理，电梯及公共楼道日常维护整洁。</p>
+          </div>
+          <div class="room-photos empty" id="photos-community" data-label="小区与楼道实拍"></div>
         </div>
       </div>
 
@@ -909,22 +930,30 @@
       throw lastErr || new Error('组件加载失败');
     }
 
-    // 六大分区并发加载 .jpg 实拍图（每间最多 5 张，按槽位顺序展示，无串行等待）
+    // 并发加载 .jpg 实拍图（支持中文命名与原英文命名兼容，每板块最多 5 张）
     (function loadRoomPhotos() {
       const roomMappings = [
-        { containerId: 'photos-hallway', prefix: 'hallway' },
-        { containerId: 'photos-living',  prefix: 'living' },
-        { containerId: 'photos-master',  prefix: 'master' },
-        { containerId: 'photos-second',  prefix: 'second' },
-        { containerId: 'photos-kitchen', prefix: 'kitchen' },
-        { containerId: 'photos-bath',    prefix: 'bath' }
+        { containerId: 'photos-hallway',   prefixes: ['门厅', 'hallway'] },
+        { containerId: 'photos-living',    prefixes: ['客厅', 'living'] },
+        { containerId: 'photos-master',    prefixes: ['主卧', 'master'] },
+        { containerId: 'photos-second',    prefixes: ['次卧', 'second'] },
+        { containerId: 'photos-kitchen',   prefixes: ['厨房', 'kitchen'] },
+        { containerId: 'photos-bath',      prefixes: ['卫生间', 'bath'] },
+        { containerId: 'photos-community', prefixes: ['小区', '楼道', 'community'] }
       ];
       const suffixes = ['', '-1', '-2', '-3', '-4', '-5'];
 
       roomMappings.forEach(room => {
         const container = document.getElementById(room.containerId);
+        if (!container) return;
         const label = container.getAttribute('data-label');
-        const loadedSlots = new Array(suffixes.length).fill(null);
+        const candidates = [];
+        room.prefixes.forEach(prefix => {
+          suffixes.forEach(suffix => {
+            candidates.push(prefix + suffix + '.jpg');
+          });
+        });
+        const loadedSlots = new Array(candidates.length).fill(null);
 
         function renderOrderedPhotos() {
           const valid = loadedSlots.filter(Boolean).slice(0, 5);
@@ -950,16 +979,16 @@
           });
         }
 
-        suffixes.forEach((suffix, slotIdx) => {
-          const file = room.prefix + suffix + '.jpg';
+        candidates.forEach((file, slotIdx) => {
+          const encodedFile = encodeURIComponent(file);
           const img = new Image();
           img.alt = label;
           img.decoding = 'async';
           img.onload = () => {
-            loadedSlots[slotIdx] = { img: img, src: file };
+            loadedSlots[slotIdx] = { img: img, src: encodedFile };
             renderOrderedPhotos();
           };
-          img.src = file;
+          img.src = encodedFile;
         });
       });
     })();
