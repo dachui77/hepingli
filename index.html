@@ -330,6 +330,11 @@
     .room-photos.count-5 .photo-item:nth-child(5) {
       grid-column: span 2;
     }
+    .room-photos.count-7 .photo-item:first-child,
+    .room-photos.count-9 .photo-item:first-child {
+      grid-column: span 2;
+      aspect-ratio: 16 / 9;
+    }
 
     .photo-item img {
       width: 100%;
@@ -707,7 +712,7 @@
     <!-- 六大分区 + 小区与楼道 Bento/Mosaic 展示 -->
     <section class="bento-card rooms-section">
       <div class="section-head">
-        <h2 style="margin-bottom:0;">🏡 六大空间装修与配置详情（点击照片可放大）</h2>
+        <h2 style="margin-bottom:0;">🏡 房屋与社区环境详情</h2>
         <span class="section-sub">三年前用心精装，用料环保扎实，7层黄金中低区，采光通风俱佳</span>
       </div>
 
@@ -930,18 +935,18 @@
       throw lastErr || new Error('组件加载失败');
     }
 
-    // 并发加载 .jpg 实拍图（支持中文命名与原英文命名兼容，每板块最多 5 张）
+    // 并发加载 .jpg 实拍图（支持中文命名与原英文命名兼容，每板块最多 10 张）
     (function loadRoomPhotos() {
       const roomMappings = [
-        { containerId: 'photos-hallway',   prefixes: ['门厅', '门厅与走廊', 'hallway'] },
-        { containerId: 'photos-living',    prefixes: ['客厅', 'living'] },
+        { containerId: 'photos-hallway',   prefixes: ['门厅', '走廊', '玄关', '门厅与走廊', 'hallway'] },
+        { containerId: 'photos-living',    prefixes: ['客厅', '客餐厅', '公共区域', '客厅与公共区域', 'living'] },
         { containerId: 'photos-master',    prefixes: ['主卧', '主卧室', 'master'] },
-        { containerId: 'photos-second',    prefixes: ['次卧', '次卧室', 'second'] },
+        { containerId: 'photos-second',    prefixes: ['次卧', '书房', '学习房', '儿童房', '次卧室', 'second'] },
         { containerId: 'photos-kitchen',   prefixes: ['厨房', 'kitchen'] },
-        { containerId: 'photos-bath',      prefixes: ['卫生间', 'bath'] },
-        { containerId: 'photos-community', prefixes: ['小区', '楼道', '小区与楼道', '小区及楼道', '小区楼道', 'community'] }
+        { containerId: 'photos-bath',      prefixes: ['卫生间', '洗手间', '浴室', 'bath'] },
+        { containerId: 'photos-community', prefixes: ['小区', '楼道', '电梯', '车库', '车位', '小区与楼道', 'community'] }
       ];
-      const suffixes = ['', '-1', '-2', '-3', '-4', '-5', '1', '2', '3', '4', '5'];
+      const suffixes = ['', '-1', '-2', '-3', '-4', '-5', '-6', '-7', '-8', '-9', '-10', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
       const exts = ['.jpg', '.JPG', '.jpeg', '.png'];
 
       roomMappings.forEach(room => {
@@ -959,10 +964,10 @@
         const loadedSlots = new Array(candidates.length).fill(null);
 
         function renderOrderedPhotos() {
-          const valid = loadedSlots.filter(Boolean).slice(0, 5);
+          const valid = loadedSlots.filter(Boolean).slice(0, 10);
           if (valid.length === 0) return;
           container.innerHTML = '';
-          container.classList.remove('empty', 'count-1', 'count-2', 'count-3', 'count-4', 'count-5');
+          container.classList.remove('empty', 'count-1', 'count-2', 'count-3', 'count-4', 'count-5', 'count-6', 'count-7', 'count-8', 'count-9', 'count-10');
           container.classList.add('count-' + valid.length);
 
           valid.forEach(entry => {
