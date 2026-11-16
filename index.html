@@ -218,37 +218,19 @@
       overflow: hidden;
       display: flex;
       flex-direction: column;
-      justify-content: flex-start;
+      justify-content: space-between;
     }
     .room-body {
       padding: 16px;
-      flex: 0 0 auto;
+      flex: 1 1 auto;
     }
     @media (min-width: 768px) {
       .room-body {
         padding: 18px 22px;
-        min-height: 128px;
-      }
-      @supports (grid-template-rows: subgrid) {
-        .room-card {
-          display: grid;
-          grid-row: span 2;
-          grid-template-rows: subgrid;
-          row-gap: 0;
-        }
-        .room-body {
-          min-height: 0;
-        }
       }
     }
     .room-card.full-span {
       grid-column: 1 / -1;
-      display: flex;
-      flex-direction: column;
-      grid-row: auto;
-    }
-    .room-card.full-span .room-body {
-      min-height: 0;
     }
     .room-header {
       display: flex;
@@ -284,7 +266,6 @@
       background: var(--border);
       border-top: 2px solid var(--border);
       width: 100%;
-      align-self: start;
     }
     .room-photos.empty {
       display: none;
@@ -454,7 +435,7 @@
       flex-shrink: 0;
     }
 
-    /* Bottom Action Bar (Mobile-safe responsive) */
+    /* Bottom Action Bar */
     .bottom-bar {
       position: fixed;
       bottom: 0; left: 0; right: 0;
@@ -916,7 +897,6 @@
       }
     });
 
-    // 通用脚本按需加载器（支持多 CDN 自动切换，适配国内网络）
     const scriptCache = {};
     function loadScriptOnce(src) {
       if (scriptCache[src]) return scriptCache[src];
@@ -946,16 +926,16 @@
       throw lastErr || new Error('组件加载失败');
     }
 
-    // 并发加载 .jpg 实拍图（支持中文命名与原英文命名兼容，每板块最多 9 张）
+    // 并发加载实拍图（同时兼容中文前缀与英文前缀，每板块最多 9 张）
     (function loadRoomPhotos() {
       const roomMappings = [
-        { containerId: 'photos-hallway',   prefixes: ['门厅', '玄关', '走廊'] },
-        { containerId: 'photos-living',    prefixes: ['客厅'], extra: ['客厅.png'] },
-        { containerId: 'photos-master',    prefixes: ['主卧'] },
-        { containerId: 'photos-second',    prefixes: ['次卧', '书房'] },
-        { containerId: 'photos-kitchen',   prefixes: ['厨房'] },
-        { containerId: 'photos-bath',      prefixes: ['卫生间'] },
-        { containerId: 'photos-community', prefixes: ['小区', '楼道'] }
+        { containerId: 'photos-hallway',   prefixes: ['门厅', '玄关', '走廊', 'hallway'] },
+        { containerId: 'photos-living',    prefixes: ['客厅', 'living'], extra: ['客厅.png'] },
+        { containerId: 'photos-master',    prefixes: ['主卧', 'master'] },
+        { containerId: 'photos-second',    prefixes: ['次卧', '书房', 'second'] },
+        { containerId: 'photos-kitchen',   prefixes: ['厨房', 'kitchen'] },
+        { containerId: 'photos-bath',      prefixes: ['卫生间', 'bath'] },
+        { containerId: 'photos-community', prefixes: ['小区', '楼道', 'community'] }
       ];
       const suffixes = ['', '-1', '-2', '-3', '-4', '-5', '-6', '-7', '-8', '-9'];
 
@@ -1022,9 +1002,6 @@
       });
     })();
 
-    // =========================================================================
-    // 房源文档模块：同时支持固定中文文件名（CUSTOM_DOCS）与 doc-1 ~ doc-10 自动探测
-    // =========================================================================
     const CUSTOM_DOCS = [
       { file: '北京市房屋建筑使用说明书.pdf', title: '北京市房屋建筑使用说明书' }
     ];
@@ -1069,9 +1046,7 @@
             window.pdfjsLib.GlobalWorkerOptions.workerSrc = pdfCdns[i].worker;
             return window.pdfjsLib;
           }
-        } catch (e) {
-          // 尝试下一个 CDN
-        }
+        } catch (e) {}
       }
       throw new Error('PDF 渲染组件加载失败，请检查网络后重试');
     }
@@ -1163,7 +1138,6 @@
     (async function loadRoomDocs() {
       const section = document.getElementById('docs-section');
       const grid = document.getElementById('docs-grid');
-      const docExts = ['pdf', 'docx', 'xlsx'];
       const addedFiles = new Set();
 
       function addDocCard(file, ext, title) {
@@ -1197,7 +1171,6 @@
         }
       }
 
-      // 1. 先探测自定义中文文件名文档（同时兼容大小写后缀）
       for (let k = 0; k < CUSTOM_DOCS.length; k++) {
         const item = CUSTOM_DOCS[k];
         const dotIdx = item.file.lastIndexOf('.');
@@ -1213,7 +1186,6 @@
         }
       }
 
-      // 2. 再探测 doc-1 ~ doc-10（兼容小写与大写后缀）
       const allExts = ['pdf', 'PDF', 'docx', 'DOCX', 'xlsx', 'XLSX'];
       for (let i = 1; i <= 10; i++) {
         for (let j = 0; j < allExts.length; j++) {
